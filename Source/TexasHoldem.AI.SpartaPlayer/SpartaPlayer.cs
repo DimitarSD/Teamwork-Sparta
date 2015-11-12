@@ -20,34 +20,27 @@
             {
                 if (preFlopCards == CardValueType.Unplayable)
                 {
-                    if (context.CanCheck)
-                    {
-                        return PlayerAction.CheckOrCall();
-                    }
-                    else
-                    {
-                        return PlayerAction.Fold();
-                    }
+                    return CheckOrFoldCustomAction(context);
                 }
 
                 if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
                 {
                     if (preFlopCards == CardValueType.NotRecommended && context.MoneyToCall > context.SmallBlind * 11)
                     {
-                        return PlayerAction.Fold();
+                        return CheckOrFoldCustomAction(context);
                     }
 
                     if (preFlopCards == CardValueType.Risky && context.MoneyToCall > context.SmallBlind * 21)
                     {
-                        return PlayerAction.Fold();
+                        return CheckOrFoldCustomAction(context);
                     }
 
-                    return PlayerAction.Raise(context.SmallBlind * 2);
+                    return PlayerAction.Raise(context.SmallBlind * 3);
                 }
 
                 if (preFlopCards == CardValueType.Recommended)
                 {
-                    return PlayerAction.Raise(context.SmallBlind * 5);
+                    return PlayerAction.Raise(context.SmallBlind * 6);
                 }
 
                 return PlayerAction.CheckOrCall();
@@ -78,6 +71,26 @@
                 }
 
                 return PlayerAction.CheckOrCall();
+            }
+        }
+
+        private static PlayerAction CheckOrFoldCustomAction(GetTurnContext context)
+        {
+            if (context.CanCheck)
+            {
+                return PlayerAction.CheckOrCall();
+            }
+            else if (!context.CanCheck)
+            {
+                if (context.CurrentPot < context.SmallBlind * 5)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+                return PlayerAction.Fold();
+            }
+            else
+            {
+                return PlayerAction.Fold();
             }
         }
     }
