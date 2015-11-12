@@ -127,6 +127,11 @@
 
                 if (GotVeryStrongHand(combination))
                 {
+                    if (context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+
                     return PlayerAction.Raise(context.CurrentPot * 2);
                 }
                 else
@@ -159,6 +164,7 @@
                                 combination == HandRankType.TwoPairs ||
                                 combination == HandRankType.Flush ||
                                 combination == HandRankType.Pair;
+
         }
 
         private static bool GotVeryStrongHand(HandRankType combination)
