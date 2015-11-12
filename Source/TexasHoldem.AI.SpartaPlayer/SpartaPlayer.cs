@@ -157,6 +157,7 @@
                                 combination == HandRankType.StraightFlush ||
                                 combination == HandRankType.ThreeOfAKind ||
                                 combination == HandRankType.TwoPairs ||
+                                combination == HandRankType.Flush ||
                                 combination == HandRankType.Pair;
         }
 
@@ -167,7 +168,8 @@
                                 combination == HandRankType.FullHouse ||
                                 combination == HandRankType.Straight ||
                                 combination == HandRankType.StraightFlush ||
-                                combination == HandRankType.ThreeOfAKind;
+                                combination == HandRankType.ThreeOfAKind ||
+                                combination == HandRankType.Flush;
         }
 
         private static PlayerAction CheckOrFoldCustomAction(GetTurnContext context)
