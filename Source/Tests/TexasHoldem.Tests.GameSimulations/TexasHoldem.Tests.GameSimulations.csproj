@@ -52,6 +52,7 @@
     <Compile Include="GameSimulators\SmartVsDummyPlayerSimulator.cs" />
     <Compile Include="GameSimulators\SmartVsSmartPlayerSimulator.cs" />
     <Compile Include="GameSimulators\SpartaVsDummySimlation.cs" />
+    <Compile Include="GameSimulators\SpartaVsSmartSimulation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

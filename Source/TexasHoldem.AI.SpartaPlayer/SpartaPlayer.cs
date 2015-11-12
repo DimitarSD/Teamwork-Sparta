@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Logic;
     using TexasHoldem.Logic.Players;
+    using Helpers;
 
     public class SpartaPlayer : BasePlayer
     {
@@ -12,12 +14,69 @@
 
         public override PlayerAction GetTurn(GetTurnContext context)
         {
-            if (context.MoneyLeft > 0 && context.IsAllIn)
+            var preFlopCards = HandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
+
+            if (context.RoundType == GameRoundType.PreFlop)
             {
-                return PlayerAction.Raise(context.MoneyLeft);
+                if (preFlopCards == CardValueType.Unplayable)
+                {
+                    if (context.CanCheck)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+                    else
+                    {
+                        return PlayerAction.Fold();
+                    }
+                }
+
+                if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
+                {
+                    if (preFlopCards == CardValueType.NotRecommended && context.MoneyToCall > context.SmallBlind * 11)
+                    {
+                        return PlayerAction.Fold();
+                    }
+
+                    if (preFlopCards == CardValueType.Risky && context.MoneyToCall > context.SmallBlind * 21)
+                    {
+                        return PlayerAction.Fold();
+                    }
+
+                    return PlayerAction.Raise(context.SmallBlind * 2);
+                }
+
+                if (preFlopCards == CardValueType.Recommended)
+                {
+                    return PlayerAction.Raise(context.SmallBlind * 5);
+                }
+
+                return PlayerAction.CheckOrCall();
             }
-            else
+            else if (context.RoundType == GameRoundType.Flop)
             {
+                if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise(context.MoneyLeft);
+                }
+
+                return PlayerAction.CheckOrCall();
+            }
+            else if (context.RoundType == GameRoundType.Turn)
+            {
+                if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise(context.MoneyLeft);
+                }
+
+                return PlayerAction.CheckOrCall();
+            }
+            else // GameRoundType.River (final card)
+            {
+                if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise(context.MoneyLeft);
+                }
+
                 return PlayerAction.CheckOrCall();
             }
         }
