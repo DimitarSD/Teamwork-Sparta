@@ -7,6 +7,7 @@
     using Logic;
     using TexasHoldem.Logic.Players;
     using Helpers;
+    using Logic.Cards;
 
     public class SpartaPlayer : BasePlayer
     {
@@ -14,7 +15,11 @@
 
         public override PlayerAction GetTurn(GetTurnContext context)
         {
-            var preFlopCards = HandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
+            var preFlopCards = CustomHandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
+
+            List<Card> currentCards = new List<Card>();
+            currentCards.Add(this.FirstCard);
+            currentCards.Add(this.SecondCard);
 
             if (context.RoundType == GameRoundType.PreFlop)
             {
@@ -47,31 +52,105 @@
             }
             else if (context.RoundType == GameRoundType.Flop)
             {
-                if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 3 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
+
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (GotStrongHand(combination))
                 {
-                    return PlayerAction.Raise(context.MoneyLeft);
+                    if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else
+                {
+                    return CheckOrFoldCustomAction(context);
                 }
 
-                return PlayerAction.CheckOrCall();
             }
             else if (context.RoundType == GameRoundType.Turn)
             {
-                if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 4 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
+
+                currentCards.Clear();
+                currentCards.Add(this.FirstCard);
+                currentCards.Add(this.SecondCard);
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (GotStrongHand(combination))
                 {
-                    return PlayerAction.Raise(context.MoneyLeft);
+                    if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else
+                {
+                    return CheckOrFoldCustomAction(context);
                 }
 
-                return PlayerAction.CheckOrCall();
             }
             else // GameRoundType.River (final card)
             {
-                if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
-                {
-                    return PlayerAction.Raise(context.MoneyLeft);
-                }
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 5 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
 
-                return PlayerAction.CheckOrCall();
+                currentCards.Clear();
+                currentCards.Add(this.FirstCard);
+                currentCards.Add(this.SecondCard);
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (GotStrongHand(combination))
+                {
+                    if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else
+                {
+                    return CheckOrFoldCustomAction(context);
+                }
             }
+        }
+
+        private static bool GotStrongHand(HandRankType combination)
+        {
+            return combination == HandRankType.Flush ||
+                                combination == HandRankType.FourOfAKind ||
+                                combination == HandRankType.FullHouse ||
+                                combination == HandRankType.Straight ||
+                                combination == HandRankType.StraightFlush ||
+                                combination == HandRankType.ThreeOfAKind ||
+                                combination == HandRankType.TwoPairs ||
+                                combination == HandRankType.Pair;
         }
 
         private static PlayerAction CheckOrFoldCustomAction(GetTurnContext context)

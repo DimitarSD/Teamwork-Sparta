@@ -13,6 +13,7 @@
             //SimulateGames(new SmartVsSmartPlayerSimulator());
             // SimulateGames(new AlwaysCallPlayersGameSimulation());
             SimulateGames(new SpartaVsDummySimlation());
+            SimulateGames(new SpartaVsSmartSimulation());
         }
 
         private static void SimulateGames(IGameSimulator gameSimulator)

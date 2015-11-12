@@ -8,7 +8,7 @@
     using TexasHoldem.Logic.Cards;
     using Logic.Players;
 
-    public static class HandEvaluator
+    public static class CustomHandEvaluator
     {
         private const int MaxCardTypeValue = 14;
 
@@ -82,7 +82,7 @@
         public static CardValueType PreFlop(GetTurnContext context, Card firstCard, Card secondCard)
         {
 
-            if (context.MoneyLeft >= context.SmallBlind * 25)
+            if (context.MoneyLeft >= context.SmallBlind * 23)
             {
                 var value = firstCard.Suit == secondCard.Suit
                     ? (firstCard.Type > secondCard.Type
@@ -106,7 +106,7 @@
                         return CardValueType.Unplayable;
                 }
             }
-            else // if (context.MoneyLeft < context.SmallBlind * 25)
+            else // if (context.MoneyLeft < context.SmallBlind * 23)
             {
                 var value = firstCard.Suit == secondCard.Suit
                    ? (firstCard.Type > secondCard.Type

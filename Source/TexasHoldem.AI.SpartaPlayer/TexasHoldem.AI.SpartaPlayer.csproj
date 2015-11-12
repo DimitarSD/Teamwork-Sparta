@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\CardValueType.cs" />
-    <Compile Include="Helpers\HandEvaluator.cs" />
+    <Compile Include="Helpers\CustomHandEvaluator.cs" />
     <Compile Include="SpartaPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
