@@ -125,18 +125,25 @@
 
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
 
-                if (GotStrongHand(combination))
+                if (GotVeryStrongHand(combination))
                 {
-                    if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
-                    {
-                        return PlayerAction.Raise(context.MoneyLeft);
-                    }
-
-                    return PlayerAction.CheckOrCall();
+                    return PlayerAction.Raise(context.CurrentPot * 2);
                 }
                 else
                 {
-                    return CheckOrFoldCustomAction(context);
+                    if (GotStrongHand(combination))
+                    {
+                        if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+
+                        return PlayerAction.CheckOrCall();
+                    }
+                    else
+                    {
+                        return CheckOrFoldCustomAction(context);
+                    }
                 }
             }
         }
@@ -151,6 +158,16 @@
                                 combination == HandRankType.ThreeOfAKind ||
                                 combination == HandRankType.TwoPairs ||
                                 combination == HandRankType.Pair;
+        }
+
+        private static bool GotVeryStrongHand(HandRankType combination)
+        {
+            return combination == HandRankType.Flush ||
+                                combination == HandRankType.FourOfAKind ||
+                                combination == HandRankType.FullHouse ||
+                                combination == HandRankType.Straight ||
+                                combination == HandRankType.StraightFlush ||
+                                combination == HandRankType.ThreeOfAKind;
         }
 
         private static PlayerAction CheckOrFoldCustomAction(GetTurnContext context)
