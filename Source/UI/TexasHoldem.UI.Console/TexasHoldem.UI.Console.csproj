@@ -82,6 +82,10 @@
       <Project>{e7ba8017-d56e-485c-81d1-a1ccdaae624f}</Project>
       <Name>TexasHoldem.AI.SmartPlayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TexasHoldem.AI.SpartaPlayer\TexasHoldem.AI.SpartaPlayer.csproj">
+      <Project>{ead1b4e0-e0c9-4f21-bc95-1f0096ab4796}</Project>
+      <Name>TexasHoldem.AI.SpartaPlayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TexasHoldem.Logic\TexasHoldem.Logic.csproj">
       <Project>{bcf99e8b-2025-444f-83c7-24542fcf33df}</Project>
       <Name>TexasHoldem.Logic</Name>
