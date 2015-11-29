@@ -8,6 +8,7 @@
     {
         public static void Main()
         {
+<<<<<<< HEAD
             //SimulateGames(new SmartVsAlwaysCallPlayerSimulation());
             //SimulateGames(new SmartVsDummyPlayerSimulator());
             //SimulateGames(new SmartVsSmartPlayerSimulator());
@@ -26,6 +27,13 @@
             //SimulateGames(new SpartaVSpartaSimulation());
         }
 
+=======
+            SimulateGames(new SmartVsAlwaysCallPlayerSimulation());
+            SimulateGames(new SmartVsDummyPlayerSimulator());
+            SimulateGames(new SmartVsSmartPlayerSimulator());
+            SimulateGames(new AlwaysCallPlayersGameSimulation());
+        }
+>>>>>>> 74c2933678ecb92d6316c42d4db5c9debb50a928
 
         private static void SimulateGames(IGameSimulator gameSimulator)
         {
