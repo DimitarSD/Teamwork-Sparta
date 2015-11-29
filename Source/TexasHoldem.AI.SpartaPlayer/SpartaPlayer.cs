@@ -16,18 +16,19 @@
 
         public override PlayerAction GetTurn(GetTurnContext context)
         {
-            var preFlopCards = CustomHandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
-
-            if (context.MoneyLeft <= 500)
+            if (context.MoneyLeft <= 300)
             {
+                var preFlopCards = CustomHandEvaluator.PreFlopAggressive(context, this.FirstCard, this.SecondCard);
                 return this.BigStackMethod(context, preFlopCards);
             }
-            else if (context.MoneyLeft > 500 && context.MoneyLeft < 1600)
+            else if (context.MoneyLeft > 300 && context.MoneyLeft < 1700)
             {
+                var preFlopCards = CustomHandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
                 return this.NormalStackMethod(context, preFlopCards);
             }
             else // context.MoneyLeft > 1600 we are CHIPLEADERS - FIGHT With AGRESSION!
             {
+                var preFlopCards = CustomHandEvaluator.PreFlopAggressive(context, this.FirstCard, this.SecondCard);
                 return this.BigStackMethod(context, preFlopCards);
             }
         }
@@ -45,7 +46,7 @@
                     if (!context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
                     {
                         // we are first and we can paid SmallBlind , can Raise and can Fold
-                        return AgressivePlayerActionPreflop(context, preFlopCards, 7, 9);
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 12);
                     }
                     else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
                     {
@@ -57,14 +58,14 @@
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
-                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 10);
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 10, 12);
                     }
 
                     return PlayerAction.CheckOrCall();
                 }
                 else if (context.MoneyLeft / context.SmallBlind > 15 && (context.MoneyLeft / context.SmallBlind <= 50))
                 {
-                    if (!context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                    if (!context.CanCheck && context.MoneyToCall <= context.SmallBlind)
                     {
                         // we are first and we can paid SmallBlind , can Raise and can Fold
                         return AgressivePlayerActionPreflop(context, preFlopCards, 6, 9);
@@ -86,7 +87,7 @@
                 }
                 else if (context.MoneyLeft / context.SmallBlind <= 15)
                 {
-                    if (!context.CanCheck && context.MyMoneyInTheRound == context.SmallBlind)
+                    if (!context.CanCheck && context.MoneyToCall <= context.SmallBlind)
                     {
                         // we are first and we can paid SmallBlind , can Raise and can Fold
                         return AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
@@ -225,7 +226,7 @@
                 else
                 {
                     // TODO add here a method to see if we have chance to make good hand and add logic
-                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
+                    if (!context.CanCheck && context.MoneyToCall <= context.SmallBlind * 2)
                     {
                         return PlayerAction.CheckOrCall();
                     }
@@ -820,7 +821,7 @@
                 {
                     if (context.CanCheck && context.MoneyLeft > 0)
                     {
-                        return PlayerAction.Raise((context.SmallBlind * raiseSbMultipliyer) - context.SmallBlind);
+                        return PlayerAction.CheckOrCall();
                     }
                     else if (context.MoneyToCall <= context.SmallBlind * 2)
                     {
