@@ -10,7 +10,7 @@
 
     public class TestBot : BasePlayer
     {
-        public override string Name { get; } = "SpartaPlayer_" + Guid.NewGuid();
+        public override string Name { get; } = "TestBot" + Guid.NewGuid();
 
         public override PlayerAction GetTurn(GetTurnContext context)
         {
