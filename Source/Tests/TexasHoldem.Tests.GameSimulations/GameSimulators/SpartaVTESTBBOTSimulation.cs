@@ -8,10 +8,10 @@ using TexasHoldem.Logic.Players;
 
 namespace TexasHoldem.Tests.GameSimulations.GameSimulators
 {
-    public class SpartaVsStoneSimulation : BaseGameSimulator
+    public class SpartaVTESTBBOTSimulation : BaseGameSimulator
     {
         private readonly IPlayer firstPlayer = new SpartaPlayer();
-        private readonly IPlayer secondPlayer = new StonePlayer();
+        private readonly IPlayer secondPlayer = new TestBot();
 
         protected override IPlayer GetFirstPlayer()
         {

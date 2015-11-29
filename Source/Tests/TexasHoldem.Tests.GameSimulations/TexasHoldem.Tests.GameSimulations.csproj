@@ -54,10 +54,7 @@
     <Compile Include="GameSimulators\SpartaVsAlwaysCallSimulation.cs" />
     <Compile Include="GameSimulators\SpartaVsDummySimlation.cs" />
     <Compile Include="GameSimulators\SpartaVsSmartSimulation.cs" />
-    <Compile Include="GameSimulators\SpartaVsStoneSimulation.cs" />
-    <Compile Include="GameSimulators\StoneVsAlwaysCallSimulation.cs" />
-    <Compile Include="GameSimulators\StoneVsDummySimulation.cs" />
-    <Compile Include="GameSimulators\StoneVsSmartSimulation.cs" />
+    <Compile Include="GameSimulators\SpartaVTESTBBOTSimulation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

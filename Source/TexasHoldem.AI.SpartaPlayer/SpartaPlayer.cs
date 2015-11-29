@@ -4,10 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using Logic;
-    using TexasHoldem.Logic.Players;
     using Helpers;
+    using Logic;
     using Logic.Cards;
+    using Spartalayer.Helpers;
+    using TexasHoldem.Logic.Players;
 
     public class SpartaPlayer : BasePlayer
     {
@@ -17,38 +18,97 @@
         {
             var preFlopCards = CustomHandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
 
+            if (context.MoneyLeft <= 500)
+            {
+                return this.SmallStackrMethod(context, preFlopCards);
+            }
+            else if (context.MoneyLeft > 500 && context.MoneyLeft < 1600)
+            {
+                return this.NormalStackMethod(context, preFlopCards);
+            }
+            else // context.MoneyLeft > 1600 we are CHIPLEADERS - FIGHT With AGRESSION!
+            {
+                return this.BigStackMethod(context, preFlopCards);
+            }
+        }
+
+        private PlayerAction NormalStackMethod(GetTurnContext context, CardValueType preFlopCards)
+        {
             List<Card> currentCards = new List<Card>();
             currentCards.Add(this.FirstCard);
             currentCards.Add(this.SecondCard);
 
             if (context.RoundType == GameRoundType.PreFlop)
             {
-                if (preFlopCards == CardValueType.Unplayable)
+                if (context.MoneyLeft / context.SmallBlind > 50)
                 {
-                    return CheckOrFoldCustomAction(context);
-                }
-
-                if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
-                {
-                    if (preFlopCards == CardValueType.NotRecommended && context.MoneyToCall > context.SmallBlind * 11)
+                    if (!context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
                     {
-                        return CheckOrFoldCustomAction(context);
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 7, 9);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                    }
+                    else if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 10);
                     }
 
-                    if (preFlopCards == CardValueType.Risky && context.MoneyToCall > context.SmallBlind * 21)
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (context.MoneyLeft / context.SmallBlind > 15 && (context.MoneyLeft / context.SmallBlind <= 50))
+                {
+                    if (!context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
                     {
-                        return CheckOrFoldCustomAction(context);
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 6, 9);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                    }
+                    else if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
                     }
 
-                    return PlayerAction.Raise(context.SmallBlind * 3);
+                    return PlayerAction.CheckOrCall();
                 }
-
-                if (preFlopCards == CardValueType.Recommended)
+                else if (context.MoneyLeft / context.SmallBlind <= 15)
                 {
-                    return PlayerAction.Raise(context.SmallBlind * 6);
+                    if (!context.CanCheck && context.MyMoneyInTheRound == context.SmallBlind)
+                    {
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 14);
+                    }
+                    else if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                    }
+
+                    return PlayerAction.CheckOrCall();
                 }
 
-                return PlayerAction.CheckOrCall();
+                return CheckOrFoldCustomAction(context);
+
             }
             else if (context.RoundType == GameRoundType.Flop)
             {
@@ -63,19 +123,438 @@
 
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
 
-                if (GotStrongHand(combination))
+                if (this.GotStrongHand(combination))
                 {
-                    if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return PlayerAction.Raise(context.MoneyLeft);
+                        return this.AgressivePlayerAction(context, combination, 7, 9);
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        return this.AgressivePlayerAction(context, combination, 9, 11);
+                    }
+                    else
+                    {
+                        return this.AgressivePlayerAction(context, combination, 5, 7);
+                    }
+                }
+                else
+                {
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    return CheckOrFoldCustomAction(context);
+                }
+            }
+            else if (context.RoundType == GameRoundType.Turn)
+            {
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 4 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
+
+                currentCards.Clear();
+                currentCards.Add(this.FirstCard);
+                currentCards.Add(this.SecondCard);
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (this.GotStrongHand(combination))
+                {
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                    {
+                        return this.AgressivePlayerAction(context, combination, 7, 9);
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        return this.AgressivePlayerAction(context, combination, 9, 11);
+                    }
+                    else
+                    {
+                        return this.AgressivePlayerAction(context, combination, 5, 7);
+                    }
+                }
+                else
+                {
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    return CheckOrFoldCustomAction(context);
+                }
+            }
+            else // GameRoundType.River (final card)
+            {
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 5 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
+
+                currentCards.Clear();
+                currentCards.Add(this.FirstCard);
+                currentCards.Add(this.SecondCard);
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (this.GotStrongHand(combination))
+                {
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                    {
+                        return this.AgressivePlayerAction(context, combination, 7, 9);
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        return this.AgressivePlayerAction(context, combination, 8, 11);
+                    }
+                    else
+                    {
+                        return this.AgressivePlayerAction(context, combination, 5, 7);
+                    }
+                }
+                else
+                {
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    return CheckOrFoldCustomAction(context);
+                }
+            }
+        }
+
+        private PlayerAction SmallStackrMethod(GetTurnContext context, CardValueType preFlopCards)
+        {
+            List<Card> currentCards = new List<Card>();
+            currentCards.Add(this.FirstCard);
+            currentCards.Add(this.SecondCard);
+
+            if (context.RoundType == GameRoundType.PreFlop)
+            {
+                if (context.MoneyLeft / context.SmallBlind > 50)
+                {
+                    if (!context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                    {
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 6, 8);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 10);
+                    }
+                    else if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 7, 9);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (context.MoneyLeft / context.SmallBlind > 15 && (context.MoneyLeft / context.SmallBlind <= 50))
+                {
+                    if (!context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                    {
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 7, 10);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 8);
+                    }
+                    else if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 7, 12);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (context.MoneyLeft / context.SmallBlind <= 15)
+                {
+                    if (!context.CanCheck && context.MyMoneyInTheRound == context.SmallBlind)
+                    {
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 12);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 10);
+                    }
+                    else if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 9, 14);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+
+                return CheckOrFoldCustomAction(context);
+
+            }
+            else if (context.RoundType == GameRoundType.Flop)
+            {
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 3 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
+
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (this.GotStrongHand(combination))
+                {
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                    {
+                        return AgressivePlayerAction(context, combination, 8, 10);
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        return AgressivePlayerAction(context, combination, 10, 12);
                     }
 
                     return PlayerAction.CheckOrCall();
                 }
                 else
                 {
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
                     return CheckOrFoldCustomAction(context);
                 }
+            }
+            else if (context.RoundType == GameRoundType.Turn)
+            {
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 4 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
+
+                currentCards.Clear();
+                currentCards.Add(this.FirstCard);
+                currentCards.Add(this.SecondCard);
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (this.GotStrongHand(combination))
+                {
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                    {
+                        return AgressivePlayerAction(context, combination, 8, 10);
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        return AgressivePlayerAction(context, combination, 10, 12);
+                    }
+                    else
+                    {
+                        return AgressivePlayerAction(context, combination, 6, 8);
+                    }
+                }
+                else
+                {
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    return CheckOrFoldCustomAction(context);
+                }
+            }
+            else // GameRoundType.River (final card)
+            {
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 5 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
+
+                currentCards.Clear();
+                currentCards.Add(this.FirstCard);
+                currentCards.Add(this.SecondCard);
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (this.GotStrongHand(combination))
+                {
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                    {
+                        return AgressivePlayerAction(context, combination, 8, 10);
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        return AgressivePlayerAction(context, combination, 10, 12);
+                    }
+                    else
+                    {
+                        return AgressivePlayerAction(context, combination, 6, 8);
+                    }
+                }
+                else
+                {
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    return CheckOrFoldCustomAction(context);
+                }
+            }
+        }
+
+        private PlayerAction BigStackMethod(GetTurnContext context, CardValueType preFlopCards)
+        {
+            List<Card> currentCards = new List<Card>();
+            currentCards.Add(this.FirstCard);
+            currentCards.Add(this.SecondCard);
+
+            if (context.RoundType == GameRoundType.PreFlop)
+            {
+                if (context.MoneyLeft / context.SmallBlind > 50)
+                {
+                    if (!context.CanCheck && context.MyMoneyInTheRound == context.SmallBlind)
+                    {
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 7, 9);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                    }
+
+                    if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 11);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (context.MoneyLeft / context.SmallBlind > 15 && (context.MoneyLeft / context.SmallBlind <= 50))
+                {
+                    if (!context.CanCheck && context.MyMoneyInTheRound == context.SmallBlind)
+                    {
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 11);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 9);
+                    }
+
+                    if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (context.MoneyLeft / context.SmallBlind <= 15)
+                {
+                    if (!context.CanCheck && context.MyMoneyInTheRound == context.SmallBlind)
+                    {
+                        // we are first and we can paid SmallBlind , can Raise and can Fold
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 9, 14);
+                    }
+                    else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
+                    {
+                        // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
+                        // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
+                        return PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                    }
+
+                    if (context.CanCheck)
+                    {
+                        // opponet is first and he has paid SmallBlind
+                        // we can check or raise here
+                        return AgressivePlayerActionPreflop(context, preFlopCards, 10, 14);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+
+                return CheckOrFoldCustomAction(context);
+
+            }
+            else if (context.RoundType == GameRoundType.Flop)
+            {
+                // TODO
+                // add strong logic for FLOP
+                // (do we have good card conmbination from our 2 cards and the floppef 3 cards)
+                // иif we have already played aggresivly (all-in) we should check/call
+                // if NOT god combination - we can check or fold
+                // if strong combination we can put more agressiong and raise/all-in
+
+                currentCards.AddRange(this.CommunityCards);
+
+                var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
+
+                if (this.GotStrongHand(combination))
+                {
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                    {
+                        return this.AgressivePlayerAction(context, combination, 9, 12);
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        return this.AgressivePlayerAction(context, combination, 12, 14);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else
+                {
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0)
+                    {
+                        return this.PassivePlayerAction(context, combination, 6, 8);
+                    }
+
+                    return CheckOrFoldCustomAction(context);
+                }
+
+                return PlayerAction.CheckOrCall();
 
             }
             else if (context.RoundType == GameRoundType.Turn)
@@ -94,29 +573,29 @@
 
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
 
-                if (GotVeryStrongHand(combination))
+                if (this.GotStrongHand(combination))
                 {
-                    if (context.MoneyLeft > 0)
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return PlayerAction.Raise(context.MoneyLeft);
+                        return this.AgressivePlayerAction(context, combination, 9, 12);
                     }
-
-                    return PlayerAction.CheckOrCall();
-                }
-                else if (GotStrongHand(combination))
-                {
-                    if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return PlayerAction.Raise(context.MoneyLeft);
+                        return this.AgressivePlayerAction(context, combination, 12, 15);
                     }
 
                     return PlayerAction.CheckOrCall();
                 }
                 else
                 {
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0)
+                    {
+                        return this.PassivePlayerAction(context, combination, 6, 8);
+                    }
+
                     return CheckOrFoldCustomAction(context);
                 }
-
             }
             else // GameRoundType.River (final card)
             {
@@ -134,54 +613,223 @@
 
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
 
-                if (GotVeryStrongHand(combination))
+                if (this.GotStrongHand(combination))
                 {
-                    if (context.MoneyLeft > 0)
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return PlayerAction.Raise(context.MoneyLeft);
+                        return this.AgressivePlayerAction(context, combination, 14, 18);
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        return this.AgressivePlayerAction(context, combination, 12, 15);
                     }
 
                     return PlayerAction.CheckOrCall();
                 }
                 else
                 {
-                    if (GotStrongHand(combination))
+                    // TODO add here a method to see if we have chance to make good hand and add logic
+                    if (context.MoneyLeft > 0)
                     {
-                        if (preFlopCards == CardValueType.Recommended && context.MoneyLeft > 0)
-                        {
-                            return PlayerAction.Raise(context.MoneyLeft);
-                        }
+                        return this.PassivePlayerAction(context, combination, 6, 8);
+                    }
 
-                        return PlayerAction.CheckOrCall();
-                    }
-                    else
-                    {
-                        return CheckOrFoldCustomAction(context);
-                    }
+                    return CheckOrFoldCustomAction(context);
                 }
             }
         }
 
-        private static bool GotStrongHand(HandRankType combination)
+        private static PlayerAction AgressivePlayerActionPreflop(GetTurnContext context, CardValueType preFlopCards, int raiseAmount, int pushAmount)
         {
-            return combination == HandRankType.Flush ||
-                    combination == HandRankType.FourOfAKind ||
-                    combination == HandRankType.FullHouse ||
-                    combination == HandRankType.Straight ||
-                    combination == HandRankType.StraightFlush ||
-                    combination == HandRankType.ThreeOfAKind ||
-                    combination == HandRankType.TwoPairs ||
-                    combination == HandRankType.Pair;
+            if (preFlopCards == CardValueType.Unplayable)
+            {
+                return CheckOrFoldCustomAction(context);
+            }
+
+            if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
+            {
+                if (context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                }
+
+                return PlayerAction.CheckOrCall();
+            }
+
+            if (preFlopCards == CardValueType.Recommended)
+            {
+                if (context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise(context.SmallBlind * pushAmount);
+                }
+
+                return PlayerAction.CheckOrCall();
+            }
+
+            return CheckOrFoldCustomAction(context);
         }
 
-        private static bool GotVeryStrongHand(HandRankType combination)
+        private static PlayerAction PassivePlayerActionPreFlop(GetTurnContext context, CardValueType preFlopCards, int pushAmount)
         {
-            return combination == HandRankType.Flush ||
-                    combination == HandRankType.FourOfAKind ||
-                    combination == HandRankType.FullHouse ||
-                    combination == HandRankType.Straight ||
-                    combination == HandRankType.StraightFlush ||
-                    combination == HandRankType.ThreeOfAKind;
+            if (preFlopCards == CardValueType.Unplayable)
+            {
+                return CheckOrFoldCustomAction(context);
+            }
+
+            if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
+            {
+                if (context.MoneyLeft > 0 && context.MoneyToCall < context.SmallBlind * 6)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+
+                return CheckOrFoldCustomAction(context);
+            }
+
+            if (preFlopCards == CardValueType.Recommended)
+            {
+                if (context.MoneyLeft > 0 && context.MyMoneyInTheRound <= context.SmallBlind * 20)
+                {
+                    return PlayerAction.Raise(context.SmallBlind * pushAmount);
+                }
+                else if (context.MoneyLeft > 0 && context.MyMoneyInTheRound > context.SmallBlind * 20)
+                {
+                    return PlayerAction.Raise(context.MoneyLeft);
+                }
+
+                return PlayerAction.CheckOrCall();
+            }
+
+            return CheckOrFoldCustomAction(context);
+        }
+
+        private PlayerAction AgressivePlayerAction(GetTurnContext context, HandRankType combination, int raiseAmount, int pushAmount)
+        {
+            if (this.GotStrongHand(combination))
+            {
+                if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                {
+                    if (!context.CanCheck 
+                        && (context.MoneyToCall > context.CurrentPot/2 || context.MoneyToCall > context.SmallBlind * 14)
+                        && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+                    else if (context.MoneyLeft >= context.SmallBlind * raiseAmount)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+                }
+                else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                {
+                    if (!context.CanCheck
+                        && (context.MoneyToCall > context.CurrentPot / 2 * 3 || context.MoneyToCall > context.SmallBlind * 20)
+                        && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+                    else if (context.MoneyLeft >= context.SmallBlind * raiseAmount)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+                }
+                else
+                {
+                    if (context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * 6);
+                    }
+                    else
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+                }
+            }
+            else
+            {
+                if (context.CanCheck && context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise ((context.SmallBlind * raiseAmount) - context.SmallBlind);
+                }
+                else if (context.MoneyToCall <= context.SmallBlind * 2)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+                return CheckOrFoldCustomAction(context);
+            }
+        }
+
+        private PlayerAction PassivePlayerAction(GetTurnContext context, HandRankType combination,int raiseAmount, int pushAmount)
+        {
+            if (this.GotStrongHand(combination))
+            {
+                if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                {
+                    if (!context.CanCheck
+                        && (context.MoneyToCall > context.CurrentPot / 2 || context.MoneyToCall > context.SmallBlind * 14)
+                        && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+                    else if (context.MoneyLeft >= context.SmallBlind * pushAmount)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * pushAmount);
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+                }
+                else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                {
+                    if (!context.CanCheck
+                        && (context.MoneyToCall > context.CurrentPot / 2 * 3 || context.MoneyToCall > context.SmallBlind * 20)
+                        && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+                    else if (context.MoneyLeft >= context.SmallBlind * raiseAmount)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+                }
+                else
+                {
+                    if (context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * 6);
+                    }
+                    else
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+                }
+            }
+            else
+            {
+                if (context.CanCheck && context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise((context.SmallBlind * raiseAmount) - context.SmallBlind);
+                }
+                else if (context.MoneyToCall <= context.SmallBlind * 2)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+
+                return CheckOrFoldCustomAction(context);
+            }
         }
 
         private static PlayerAction CheckOrFoldCustomAction(GetTurnContext context)
@@ -192,8 +840,16 @@
             }
             else if (!context.CanCheck)
             {
-                if (context.MoneyToCall < context.SmallBlind * 5)
+                if ((context.MoneyToCall < context.SmallBlind * 5) && (context.MoneyLeft > context.SmallBlind * 21))
                 {
+                    return PlayerAction.CheckOrCall();
+                }
+                else if ((context.MoneyToCall < context.SmallBlind * 5) && (context.MoneyLeft <= context.SmallBlind * 11))
+                {
+                    if (context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
                     return PlayerAction.CheckOrCall();
                 }
 
@@ -204,5 +860,67 @@
                 return PlayerAction.Fold();
             }
         }
+
+        public bool GotAceHighCardPreFlop(HandRankType combination, GetTurnContext context)
+        {
+            var preFlopCards = CustomHandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
+
+            return combination == HandRankType.HighCard &&
+                (this.FirstCard.Type == CardType.Ace || this.SecondCard.Type == CardType.Ace);
+        }
+
+        public bool GotSuitedCardsCardPreFlop(HandRankType combination, GetTurnContext context)
+        {
+            var preFlopCards = CustomHandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
+
+            return this.FirstCard.Suit == this.SecondCard.Suit;
+        }
+
+        private bool GotStrongHand(HandRankType combination)
+        {
+            return combination == HandRankType.Pair ||
+                    combination == HandRankType.TwoPairs ||
+                    combination == HandRankType.ThreeOfAKind ||
+                    combination == HandRankType.Straight ||
+                    combination == HandRankType.Flush ||
+                    combination == HandRankType.FullHouse ||
+                    combination == HandRankType.FourOfAKind ||
+                    combination == HandRankType.StraightFlush;
+        }
+
+        private bool GotVeryStrongHand(HandRankType combination)
+        {
+            return combination == HandRankType.ThreeOfAKind ||
+                    combination == HandRankType.Straight ||
+                    combination == HandRankType.Flush ||
+                    combination == HandRankType.FullHouse ||
+                    combination == HandRankType.FourOfAKind ||
+                    combination == HandRankType.StraightFlush;
+        }
+
+        private bool GotTheStrongestHand(HandRankType combination)
+        {
+            return combination == HandRankType.Flush ||
+                    combination == HandRankType.FullHouse ||
+                    combination == HandRankType.FourOfAKind ||
+                    combination == HandRankType.StraightFlush;
+
+        }
+
+        private int PercentagePerToMakeCombination()
+        {
+            return -1;
+            // TODO method to calculate the chance to make good combination
+
+            //  combination == HandRankType.Pair ||
+            //  combination == HandRankType.TwoPairs ||
+            //  combination == HandRankType.ThreeOfAKind ||
+            //  combination == HandRankType.Straight ||
+            //  combination == HandRankType.Flush ||
+            //  combination == HandRankType.FullHouse ||
+            //  combination == HandRankType.FourOfAKind ||
+            //  combination == HandRankType.StraightFlush;
+        }
+
     }
 }
