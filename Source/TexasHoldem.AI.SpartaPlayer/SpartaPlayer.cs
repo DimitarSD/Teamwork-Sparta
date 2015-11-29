@@ -20,7 +20,7 @@
 
             if (context.MoneyLeft <= 500)
             {
-                return this.SmallStackrMethod(context, preFlopCards);
+                return this.BigStackMethod(context, preFlopCards);
             }
             else if (context.MoneyLeft > 500 && context.MoneyLeft < 1600)
             {
@@ -762,6 +762,7 @@
                     {
                         return PlayerAction.CheckOrCall();
                     }
+
                     return CheckOrFoldCustomAction(context);
                 }
             }
@@ -772,7 +773,7 @@
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
                         if (!context.CanCheck
-                            && (context.MoneyToCall > context.SmallBlind * 14)
+                            && (context.MoneyToCall > context.SmallBlind * 10)
                             && context.MoneyLeft > 0)
                         {
                             return PlayerAction.Raise(context.MoneyLeft);
@@ -783,7 +784,7 @@
                         }
                         else
                         {
-                            return PlayerAction.Raise(context.MoneyLeft);
+                            return PlayerAction.CheckOrCall();
                         }
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
@@ -794,13 +795,13 @@
                         {
                             return PlayerAction.Raise(context.MoneyLeft);
                         }
-                        else if (context.MoneyLeft >= context.SmallBlind * raiseSbMultipliyer)
+                        else if (context.MoneyLeft > 0)
                         {
                             return PlayerAction.Raise(context.CurrentPot * potMultiplier);
                         }
                         else
                         {
-                            return PlayerAction.Raise(context.MoneyLeft);
+                            return PlayerAction.CheckOrCall();
                         }
                     }
                     else
@@ -825,7 +826,8 @@
                     {
                         return PlayerAction.CheckOrCall();
                     }
-                    return CheckOrFoldCustomAction(context);
+
+                    return PlayerAction.CheckOrCall();
                 }
             }
             else
