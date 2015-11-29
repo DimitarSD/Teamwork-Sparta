@@ -13,12 +13,12 @@
             //SimulateGames(new SmartVsSmartPlayerSimulator());
             //SimulateGames(new AlwaysCallPlayersGameSimulation());
             //SimulateGames(new SpartaVsDummySimlation());
-            //Console.WriteLine("Sparta vs DummyPlayer - FIGHT!");
-            //SimulateGames(new SpartaVsDummySimlation());
-            //Console.WriteLine("Sparta vs AlwaysCallPlayer - FIGHT!");
-            //SimulateGames(new SpartaVsAlwaysCallSimulation());
-            //Console.WriteLine("Sparta vs SmartPlayer - FIGHT!");
-            //SimulateGames(new SpartaVsSmartSimulation());
+            Console.WriteLine("Sparta vs DummyPlayer - FIGHT!");
+            SimulateGames(new SpartaVsDummySimlation());
+            Console.WriteLine("Sparta vs AlwaysCallPlayer - FIGHT!");
+            SimulateGames(new SpartaVsAlwaysCallSimulation());
+            Console.WriteLine("Sparta vs SmartPlayer - FIGHT!");
+            SimulateGames(new SpartaVsSmartSimulation());
 
             Console.WriteLine("Sparta vs TEST - FIGHT!");
             SimulateGames(new SpartaVTESTBBOTSimulation());

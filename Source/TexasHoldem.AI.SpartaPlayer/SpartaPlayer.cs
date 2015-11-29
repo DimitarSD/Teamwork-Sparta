@@ -127,15 +127,15 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 7, 9);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 7, 9);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 9, 11);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
                     }
                     else
                     {
-                        return this.AgressivePlayerAction(context, combination, 5, 7);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 7);
                     }
                 }
                 else
@@ -169,15 +169,15 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 7, 9);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 7, 9);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 9, 11);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
                     }
                     else
                     {
-                        return this.AgressivePlayerAction(context, combination, 5, 7);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 7);
                     }
                 }
                 else
@@ -211,15 +211,15 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 7, 9);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 7, 9);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 8, 11);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 8, 11);
                     }
                     else
                     {
-                        return this.AgressivePlayerAction(context, combination, 5, 7);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 7);
                     }
                 }
                 else
@@ -330,11 +330,11 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return AgressivePlayerAction(context, combination, 8, 10);
+                        return AgressivePlayerAction(context, preFlopCards, combination, 8, 10);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return AgressivePlayerAction(context, combination, 10, 12);
+                        return AgressivePlayerAction(context, preFlopCards, combination, 10, 12);
                     }
 
                     return PlayerAction.CheckOrCall();
@@ -370,15 +370,15 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return AgressivePlayerAction(context, combination, 8, 10);
+                        return AgressivePlayerAction(context, preFlopCards, combination, 8, 10);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return AgressivePlayerAction(context, combination, 10, 12);
+                        return AgressivePlayerAction(context, preFlopCards, combination, 10, 12);
                     }
                     else
                     {
-                        return AgressivePlayerAction(context, combination, 6, 8);
+                        return AgressivePlayerAction(context, preFlopCards, combination, 6, 8);
                     }
                 }
                 else
@@ -412,15 +412,15 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return AgressivePlayerAction(context, combination, 8, 10);
+                        return AgressivePlayerAction(context, preFlopCards, combination, 8, 10);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return AgressivePlayerAction(context, combination, 10, 12);
+                        return AgressivePlayerAction(context, preFlopCards, combination, 10, 12);
                     }
                     else
                     {
-                        return AgressivePlayerAction(context, combination, 6, 8);
+                        return AgressivePlayerAction(context, preFlopCards, combination, 6, 8);
                     }
                 }
                 else
@@ -457,8 +457,7 @@
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
                         return PassivePlayerActionPreFlop(context, preFlopCards, 12);
                     }
-
-                    if (context.CanCheck)
+                    else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
@@ -480,8 +479,7 @@
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
                         return PassivePlayerActionPreFlop(context, preFlopCards, 9);
                     }
-
-                    if (context.CanCheck)
+                    else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
@@ -503,8 +501,7 @@
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
                         return PassivePlayerActionPreFlop(context, preFlopCards, 12);
                     }
-
-                    if (context.CanCheck)
+                    else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
@@ -534,11 +531,11 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 9, 12);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 2, 12);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 12, 14);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 2, 14);
                     }
 
                     return PlayerAction.CheckOrCall();
@@ -577,11 +574,11 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 9, 12);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 2, 12);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 12, 15);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 2, 15);
                     }
 
                     return PlayerAction.CheckOrCall();
@@ -617,11 +614,11 @@
                 {
                     if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 14, 18);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 2, 18);
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, combination, 12, 15);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 2, 15);
                     }
 
                     return PlayerAction.CheckOrCall();
@@ -703,67 +700,192 @@
             return CheckOrFoldCustomAction(context);
         }
 
-        private PlayerAction AgressivePlayerAction(GetTurnContext context, HandRankType combination, int raiseAmount, int pushAmount)
+        private PlayerAction AgressivePlayerAction(GetTurnContext context,CardValueType preFlopCards, HandRankType combination, int potMultiplier, int raiseSbMultipliyer)
         {
-            if (this.GotStrongHand(combination))
+            if (preFlopCards == CardValueType.Recommended)
             {
-                if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                if (this.GotStrongHand(combination))
                 {
-                    if (!context.CanCheck 
-                        && (context.MoneyToCall > context.CurrentPot/2 || context.MoneyToCall > context.SmallBlind * 14)
-                        && context.MoneyLeft > 0)
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
                     {
-                        return PlayerAction.Raise(context.MoneyLeft);
+                        if (!context.CanCheck
+                            && (context.MoneyToCall > context.CurrentPot / 2 || context.MoneyToCall > context.SmallBlind * 14)
+                            && context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                        else if (context.MoneyLeft >= context.SmallBlind * raiseSbMultipliyer)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot * potMultiplier);
+                        }
+                        else
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
                     }
-                    else if (context.MoneyLeft >= context.SmallBlind * raiseAmount)
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                        if (!context.CanCheck
+                            && (context.MoneyToCall > context.CurrentPot / 2 * 3 || context.MoneyToCall > context.SmallBlind * 20)
+                            && context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                        else if (context.MoneyLeft >= context.SmallBlind * raiseSbMultipliyer)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot * potMultiplier);
+                        }
+                        else
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
                     }
                     else
                     {
-                        return PlayerAction.Raise(context.MoneyLeft);
-                    }
-                }
-                else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
-                {
-                    if (!context.CanCheck
-                        && (context.MoneyToCall > context.CurrentPot / 2 * 3 || context.MoneyToCall > context.SmallBlind * 20)
-                        && context.MoneyLeft > 0)
-                    {
-                        return PlayerAction.Raise(context.MoneyLeft);
-                    }
-                    else if (context.MoneyLeft >= context.SmallBlind * raiseAmount)
-                    {
-                        return PlayerAction.Raise(context.SmallBlind * raiseAmount);
-                    }
-                    else
-                    {
-                        return PlayerAction.Raise(context.MoneyLeft);
+                        if (context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * 6);
+                        }
+                        else
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
                     }
                 }
                 else
                 {
-                    if (context.MoneyLeft > 0)
+                    if (context.CanCheck && context.MoneyLeft > 0)
                     {
-                        return PlayerAction.Raise(context.SmallBlind * 6);
+                        return PlayerAction.Raise((context.SmallBlind * raiseSbMultipliyer) - context.SmallBlind);
                     }
-                    else
+                    else if (context.MoneyToCall <= context.SmallBlind * 2)
                     {
                         return PlayerAction.CheckOrCall();
                     }
+                    return CheckOrFoldCustomAction(context);
+                }
+            }
+            else if (preFlopCards == CardValueType.NotRecommended || preFlopCards == CardValueType.Risky)
+            {
+                if (this.GotStrongHand(combination))
+                {
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                    {
+                        if (!context.CanCheck
+                            && (context.MoneyToCall > context.SmallBlind * 14)
+                            && context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                        else if (context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot * potMultiplier);
+                        }
+                        else
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        if (!context.CanCheck
+                            && (context.MoneyToCall > context.CurrentPot / 2 * 3 || context.MoneyToCall > context.SmallBlind * 20)
+                            && context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                        else if (context.MoneyLeft >= context.SmallBlind * raiseSbMultipliyer)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot * potMultiplier);
+                        }
+                        else
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                    }
+                    else
+                    {
+                        if (context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * 6);
+                        }
+                        else
+                        {
+                            return CheckOrFoldCustomAction(context);
+                        }
+                    }
+                }
+                else
+                {
+                    if (context.CanCheck && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.Raise((context.SmallBlind * raiseSbMultipliyer) - context.SmallBlind);
+                    }
+                    else if (context.MoneyToCall <= context.SmallBlind * 2)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+                    return CheckOrFoldCustomAction(context);
                 }
             }
             else
             {
-                if (context.CanCheck && context.MoneyLeft > 0)
+                if (this.GotStrongHand(combination))
                 {
-                    return PlayerAction.Raise ((context.SmallBlind * raiseAmount) - context.SmallBlind);
+                    if (context.MoneyLeft > 0 && this.GotTheStrongestHand(combination))
+                    {
+                        if (!context.CanCheck
+                            && (context.MoneyToCall > context.CurrentPot / 2 || context.MoneyToCall > context.SmallBlind * 14)
+                            && context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                        else if (context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot * potMultiplier);
+                        }
+                        else
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                    }
+                    else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
+                    {
+                        if (!context.CanCheck
+                            && (context.MoneyToCall > context.CurrentPot / 2 * 3 || context.MoneyToCall > context.SmallBlind * 20)
+                            && context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                        else if (context.MoneyLeft >= context.SmallBlind * raiseSbMultipliyer)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot * potMultiplier);
+                        }
+                        else
+                        {
+                            return PlayerAction.Raise(context.MoneyLeft);
+                        }
+                    }
+                    else
+                    {
+                        if (context.MoneyLeft > 0)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * 6);
+                        }
+                        else
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                    }
                 }
-                else if (context.MoneyToCall <= context.SmallBlind * 2)
+                else
                 {
-                    return PlayerAction.CheckOrCall();
+                    if (context.MoneyToCall <= context.SmallBlind * 2 && context.MoneyLeft > 0)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+                    return CheckOrFoldCustomAction(context);
                 }
-                return CheckOrFoldCustomAction(context);
             }
         }
 
