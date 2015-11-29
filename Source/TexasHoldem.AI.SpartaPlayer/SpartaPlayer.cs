@@ -962,19 +962,10 @@
             }
             else if (!context.CanCheck)
             {
-                if ((context.MoneyToCall < context.SmallBlind * 5) && (context.MoneyLeft > context.SmallBlind * 21))
+                if (context.CurrentPot < context.SmallBlind * 5)
                 {
                     return PlayerAction.CheckOrCall();
                 }
-                else if ((context.MoneyToCall < context.SmallBlind * 5) && (context.MoneyLeft <= context.SmallBlind * 11))
-                {
-                    if (context.MoneyLeft > 0)
-                    {
-                        return PlayerAction.Raise(context.MoneyLeft);
-                    }
-                    return PlayerAction.CheckOrCall();
-                }
-
                 return PlayerAction.Fold();
             }
             else
@@ -1026,7 +1017,6 @@
                     combination == HandRankType.FullHouse ||
                     combination == HandRankType.FourOfAKind ||
                     combination == HandRankType.StraightFlush;
-
         }
 
         private int PercentagePerToMakeCombination()
