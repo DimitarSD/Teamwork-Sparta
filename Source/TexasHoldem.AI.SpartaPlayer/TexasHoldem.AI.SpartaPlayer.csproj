@@ -41,6 +41,9 @@
   <ItemGroup>
     <Compile Include="Helpers\CardValueType.cs" />
     <Compile Include="Helpers\CustomHandEvaluator.cs" />
+    <Compile Include="Helpers\CustomHandStreightChecks.cs" />
+    <Compile Include="Helpers\CustomPlayerActions.cs" />
+    <Compile Include="Helpers\CustomStackActions.cs" />
     <Compile Include="SpartaPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBot.cs" />
