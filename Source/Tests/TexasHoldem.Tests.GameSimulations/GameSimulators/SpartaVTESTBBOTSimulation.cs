@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TexasHoldem.AI.SpartaPlayer;
-using TexasHoldem.Logic.Players;
-
-namespace TexasHoldem.Tests.GameSimulations.GameSimulators
+﻿namespace TexasHoldem.Tests.GameSimulations.GameSimulators
 {
+    using TexasHoldem.AI.SpartaPlayer;
+    using TexasHoldem.Logic.Players;
+
     public class SpartaVTESTBBOTSimulation : BaseGameSimulator
     {
         private readonly IPlayer firstPlayer = new SpartaPlayer();

@@ -12,13 +12,17 @@ namespace TexasHoldem.AI.SpartaPlayer.Helpers
 {
     public static class CustomHandStreightChecks
     {
-        public static bool GotAceHighCardPreFlop(HandRankType combination, GetTurnContext context, Card firstCard, Card secondCard)
+        public static bool GotAceHighCardPreFlop(GetTurnContext context, Card firstCard, Card secondCard)
         {
-            return combination == HandRankType.HighCard &&
-                (secondCard.Type == CardType.Ace ^ secondCard.Type == CardType.Ace);
+            return secondCard.Type == CardType.Ace ^ secondCard.Type == CardType.Ace;
         }
 
-        public static bool GotSuitedCardsCardPreFlop(HandRankType combination, GetTurnContext context, Card firstCard, Card secondCard)
+        public static bool GotKingighCardPreFlop(GetTurnContext context, Card firstCard, Card secondCard)
+        {
+            return secondCard.Type == CardType.King ^ secondCard.Type == CardType.King;
+        }
+
+        public static bool GotSuitedCardsCardPreFlop(GetTurnContext context, Card firstCard, Card secondCard)
         {
             return firstCard.Suit == secondCard.Suit;
         }

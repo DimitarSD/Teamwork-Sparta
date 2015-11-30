@@ -23,11 +23,11 @@
                 var firstCard = this.FirstCard;
                 var secondCard = this.SecondCard;
                 var communityCards = this.CommunityCards;
-                return CustomStackActions.BigStackMethod(context, preFlopCards, firstCard, secondCard, communityCards);
+                return CustomStackActions.NormalStackMethod(context, preFlopCards, firstCard, secondCard, communityCards);
             }
             else if (context.MoneyLeft > 400 && context.MoneyLeft < 1600)
             {
-                var preFlopCards = CustomHandEvaluator.PreFlopAggressive(context, this.FirstCard, this.SecondCard);
+                var preFlopCards = CustomHandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
                 var firstCard = this.FirstCard;
                 var secondCard = this.SecondCard;
                 var communityCards = this.CommunityCards;
@@ -40,7 +40,7 @@
                 var firstCard = this.FirstCard;
                 var secondCard = this.SecondCard;
                 var communityCards = this.CommunityCards;
-                return CustomStackActions.BigStackMethod(context, preFlopCards, firstCard, secondCard, communityCards);
+                return CustomStackActions.NormalStackMethod(context, preFlopCards, firstCard, secondCard, communityCards);
             }
         }
     }

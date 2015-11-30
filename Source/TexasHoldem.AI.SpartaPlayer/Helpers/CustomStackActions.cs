@@ -12,6 +12,8 @@
 
     public static class CustomStackActions
     {
+        private static bool KickerAgressionStarted = false;
+
         public static PlayerAction NormalStackMethod(GetTurnContext context, CardValueType preFlopCards, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
             List<Card> currentCards = new List<Card>();
@@ -24,70 +26,171 @@
                 {
                     if (!context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
                     {
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
                         // we are first and we can paid SmallBlind , can Raise and can Fold
-                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 8, 12);
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                     }
                     else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
-                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 10, 12);
-                    }
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
 
-                    return PlayerAction.CheckOrCall();
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                    }
+                    else
+                    {
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return PlayerAction.CheckOrCall();
+                    }
                 }
                 else if (context.MoneyLeft / context.SmallBlind > 15 && (context.MoneyLeft / context.SmallBlind <= 50))
                 {
                     if (!context.CanCheck && context.MoneyToCall <= context.SmallBlind)
                     {
                         // we are first and we can paid SmallBlind , can Raise and can Fold
-                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 6, 9);
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                     }
                     else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
-                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                    }
+                    else
+                    {
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return PlayerAction.CheckOrCall();
                     }
 
-                    return PlayerAction.CheckOrCall();
                 }
                 else if (context.MoneyLeft / context.SmallBlind <= 15)
                 {
                     if (!context.CanCheck && context.MoneyToCall <= context.SmallBlind)
                     {
                         // we are first and we can paid SmallBlind , can Raise and can Fold
-                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                     }
                     else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 14);
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
-                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                    }
+                    else
+                    {
+                        if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                            || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                        {
+                            KickerAgressionStarted = true;
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        }
+
+                        return PlayerAction.CheckOrCall();
                     }
 
-                    return PlayerAction.CheckOrCall();
                 }
+                else
+                {
+                    if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
+                        || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
+                    {
+                        KickerAgressionStarted = true;
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                    }
 
-                return CustomPlayerActions.CheckOrFoldCustomAction(context);
+                    return CustomPlayerActions.CheckOrFoldCustomAction(context);
+                }
 
             }
             else if (context.RoundType == GameRoundType.Flop)
@@ -100,7 +203,6 @@
                 // if strong combination we can put more agressiong and raise/all-in
 
                 currentCards.AddRange(communityCards);
-
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
 
                 if (CustomHandStreightChecks.GotStrongHand(combination))
@@ -118,10 +220,14 @@
                         return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
                 }
+                else if (KickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
+                {
+                    return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
+                }
                 else
                 {
                     // TODO add here a method to see if we have chance to make good hand and add logic
-                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 3)
                     {
                         return CustomPlayerActions.PassivePlayerAction(context, combination, 5, 9);
                     }
@@ -160,6 +266,10 @@
                     {
                         return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
+                }
+                else if (KickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
+                {
+                    return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
                 }
                 else
                 {
@@ -203,6 +313,10 @@
                         return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
                 }
+                else if (KickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
+                {
+                    return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
+                }
                 else
                 {
                     // TODO add here a method to see if we have chance to make good hand and add logic
@@ -235,7 +349,7 @@
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 10);
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {
@@ -257,7 +371,7 @@
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 8);
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {
@@ -279,7 +393,7 @@
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 10);
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {
@@ -436,7 +550,7 @@
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {
@@ -458,7 +572,7 @@
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 9);
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {
@@ -480,7 +594,7 @@
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
                     }
                     else if (context.CanCheck)
                     {

@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EAD1B4E0-E0C9-4F21-BC95-1F0096AB4796}</ProjectGuid>
+    <ProjectGuid>{B8D09A67-E6CA-4CC7-ADA3-1EE10124690B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TexasHoldem.AI.SpartaPlayer</RootNamespace>
-    <AssemblyName>TexasHoldem.AI.SpartaPlayer</AssemblyName>
+    <RootNamespace>TexasHoldem.AI.TestBot</RootNamespace>
+    <AssemblyName>TexasHoldem.AI.TestBot</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,15 +39,14 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\CardValueType.cs" />
-    <Compile Include="Helpers\CustomHandEvaluator.cs" />
-    <Compile Include="Helpers\CustomHandStreightChecks.cs" />
-    <Compile Include="Helpers\CustomPlayerActions.cs" />
-    <Compile Include="Helpers\CustomStackActions.cs" />
-    <Compile Include="SpartaPlayer.cs" />
+    <Compile Include="TestBot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TexasHoldem.AI.SpartaPlayer\TexasHoldem.AI.SpartaPlayer.csproj">
+      <Project>{ead1b4e0-e0c9-4f21-bc95-1f0096ab4796}</Project>
+      <Name>TexasHoldem.AI.SpartaPlayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TexasHoldem.Logic\TexasHoldem.Logic.csproj">
       <Project>{bcf99e8b-2025-444f-83c7-24542fcf33df}</Project>
       <Name>TexasHoldem.Logic</Name>
