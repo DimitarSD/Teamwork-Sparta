@@ -16,14 +16,14 @@
 
         public override PlayerAction GetTurn(GetTurnContext context)
         {
-            if (context.MoneyLeft <= 300)
+            if (context.MoneyLeft <= 400)
             {
                 var preFlopCards = CustomHandEvaluator.PreFlopAggressive(context, this.FirstCard, this.SecondCard);
                 return this.BigStackMethod(context, preFlopCards);
             }
-            else if (context.MoneyLeft > 300 && context.MoneyLeft < 1700)
+            else if (context.MoneyLeft > 400 && context.MoneyLeft < 1600)
             {
-                var preFlopCards = CustomHandEvaluator.PreFlop(context, this.FirstCard, this.SecondCard);
+                var preFlopCards = CustomHandEvaluator.PreFlopAggressive(context, this.FirstCard, this.SecondCard);
                 return this.NormalStackMethod(context, preFlopCards);
             }
             else // context.MoneyLeft > 1600 we are CHIPLEADERS - FIGHT With AGRESSION!
@@ -52,13 +52,13 @@
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                        return this.PassivePlayerActionPreFlop(context, preFlopCards, 12);
                     }
                     else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
-                        return AgressivePlayerActionPreflop(context, preFlopCards, 10, 12);
+                        return this.AgressivePlayerActionPreflop(context, preFlopCards, 10, 12);
                     }
 
                     return PlayerAction.CheckOrCall();
@@ -68,19 +68,19 @@
                     if (!context.CanCheck && context.MoneyToCall <= context.SmallBlind)
                     {
                         // we are first and we can paid SmallBlind , can Raise and can Fold
-                        return AgressivePlayerActionPreflop(context, preFlopCards, 6, 9);
+                        return this.AgressivePlayerActionPreflop(context, preFlopCards, 6, 9);
                     }
                     else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return PassivePlayerActionPreFlop(context, preFlopCards, 12);
+                        return this.PassivePlayerActionPreFlop(context, preFlopCards, 12);
                     }
                     else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
-                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                        return this.AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
                     }
 
                     return PlayerAction.CheckOrCall();
@@ -90,19 +90,19 @@
                     if (!context.CanCheck && context.MoneyToCall <= context.SmallBlind)
                     {
                         // we are first and we can paid SmallBlind , can Raise and can Fold
-                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                        return this.AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
                     }
                     else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
                     {
                         // oppponent is first and has raised with moneyToCall - opponent has raised pre-flop
                         // we can Re-Raise (very strong hand only) - we can call (Verystrong or string) - we Fold
-                        return PassivePlayerActionPreFlop(context, preFlopCards, 14);
+                        return this.PassivePlayerActionPreFlop(context, preFlopCards, 14);
                     }
                     else if (context.CanCheck)
                     {
                         // opponet is first and he has paid SmallBlind
                         // we can check or raise here
-                        return AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
+                        return this.AgressivePlayerActionPreflop(context, preFlopCards, 8, 14);
                     }
 
                     return PlayerAction.CheckOrCall();
@@ -136,7 +136,7 @@
                     }
                     else
                     {
-                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 7);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
                 }
                 else
@@ -144,11 +144,12 @@
                     // TODO add here a method to see if we have chance to make good hand and add logic
                     if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
                     {
-                        return PlayerAction.CheckOrCall();
+                        return this.PassivePlayerAction(context, combination, 5, 9);
                     }
 
                     return CheckOrFoldCustomAction(context);
                 }
+
             }
             else if (context.RoundType == GameRoundType.Turn)
             {
@@ -178,7 +179,7 @@
                     }
                     else
                     {
-                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 7);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
                 }
                 else
@@ -186,7 +187,7 @@
                     // TODO add here a method to see if we have chance to make good hand and add logic
                     if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
                     {
-                        return PlayerAction.CheckOrCall();
+                        return this.PassivePlayerAction(context, combination, 5, 9);
                     }
 
                     return CheckOrFoldCustomAction(context);
@@ -216,19 +217,19 @@
                     }
                     else if (context.MoneyLeft > 0 && this.GotVeryStrongHand(combination))
                     {
-                        return this.AgressivePlayerAction(context, preFlopCards, combination, 8, 11);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
                     }
                     else
                     {
-                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 7);
+                        return this.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
                 }
                 else
                 {
                     // TODO add here a method to see if we have chance to make good hand and add logic
-                    if (!context.CanCheck && context.MoneyToCall <= context.SmallBlind * 2)
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 2)
                     {
-                        return PlayerAction.CheckOrCall();
+                        return this.PassivePlayerAction(context, combination, 5, 9);
                     }
 
                     return CheckOrFoldCustomAction(context);
@@ -637,65 +638,214 @@
             }
         }
 
-        private static PlayerAction AgressivePlayerActionPreflop(GetTurnContext context, CardValueType preFlopCards, int raiseAmount, int pushAmount)
+        private PlayerAction AgressivePlayerActionPreflop(GetTurnContext context, CardValueType preFlopCards, int raiseAmount, int pushAmount)
         {
-            if (preFlopCards == CardValueType.Unplayable)
+            if (!context.CanCheck && context.MoneyToCall == context.SmallBlind && preFlopCards != CardValueType.Unplayable)
             {
-                return CheckOrFoldCustomAction(context);
-            }
-
-            if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
-            {
-                if (context.MoneyLeft > 0)
+                if (preFlopCards == CardValueType.NotRecommended)
                 {
-                    return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                    if (context.MoneyLeft > 0)
+                    {
+                        if (context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                        }
+                        else if (context.CanCheck && context.MyMoneyInTheRound > context.SmallBlind)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else
+                        {
+                            return CheckOrFoldCustomAction(context);
+                        }
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (preFlopCards == CardValueType.Risky)
+                {
+                    if (context.MoneyLeft > 0)
+                    {
+                        if (context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                        }
+                        else if (context.CanCheck && context.MyMoneyInTheRound > context.SmallBlind)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (preFlopCards == CardValueType.Recommended)
+                {
+                    if (context.MoneyLeft > 0)
+                    {
+                        if (context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * (raiseAmount + 2));
+                        }
+                        else if (context.CanCheck && context.MyMoneyInTheRound > context.SmallBlind)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot);
+                        }
+                        else
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+            }
+            else
+            {
+                if (preFlopCards == CardValueType.Unplayable)
+                {
+                    return CheckOrFoldCustomAction(context);
                 }
 
-                return PlayerAction.CheckOrCall();
-            }
-
-            if (preFlopCards == CardValueType.Recommended)
-            {
-                if (context.MoneyLeft > 0)
+                if (preFlopCards == CardValueType.NotRecommended)
                 {
-                    return PlayerAction.Raise(context.SmallBlind * pushAmount);
+                    if (context.MoneyLeft > 0)
+                    {
+                        if (context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                        }
+                        else if (context.CanCheck && context.MyMoneyInTheRound > context.SmallBlind)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else if (!context.CanCheck && context.MoneyToCall < context.SmallBlind * 5)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else
+                        {
+                            return CheckOrFoldCustomAction(context);
+                        }
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (preFlopCards == CardValueType.Risky)
+                {
+                    if (context.MoneyLeft > 0)
+                    {
+                        if (context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * raiseAmount);
+                        }
+                        else if(context.CanCheck && context.MyMoneyInTheRound > context.SmallBlind)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else if (!context.CanCheck && context.MoneyToCall < context.SmallBlind * 6)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else
+                        {
+                            return CheckOrFoldCustomAction(context);
+                        }
+                    }
+
+                    return PlayerAction.CheckOrCall();
                 }
 
-                return PlayerAction.CheckOrCall();
+                if (preFlopCards == CardValueType.Recommended)
+                {
+                    if (context.MoneyLeft > 0)
+                    {
+                        if (context.CanCheck && context.MyMoneyInTheRound <= context.SmallBlind)
+                        {
+                            return PlayerAction.Raise(context.SmallBlind * (raiseAmount + 2));
+                        }
+                        else if (context.CanCheck && context.MyMoneyInTheRound > context.SmallBlind)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot);
+                        }
+                        else if (!context.CanCheck && context.MoneyToCall < context.SmallBlind * 6)
+                        {
+                            return PlayerAction.Raise(context.CurrentPot);
+                        }
+                        else
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
             }
 
             return CheckOrFoldCustomAction(context);
         }
 
-        private static PlayerAction PassivePlayerActionPreFlop(GetTurnContext context, CardValueType preFlopCards, int pushAmount)
+        private PlayerAction PassivePlayerActionPreFlop(GetTurnContext context, CardValueType preFlopCards, int pushAmount)
         {
-            if (preFlopCards == CardValueType.Unplayable)
+            if ((!context.CanCheck && context.MoneyToCall == context.SmallBlind) && preFlopCards != CardValueType.Unplayable)
             {
-                return CheckOrFoldCustomAction(context);
-            }
-
-            if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
-            {
-                if (context.MoneyLeft > 0 && context.MoneyToCall < context.SmallBlind * 6)
+                if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
                 {
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 6)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    return CheckOrFoldCustomAction(context);
+                }
+
+                if (preFlopCards == CardValueType.Recommended)
+                {
+                    if (context.MoneyLeft > 0 && context.MyMoneyInTheRound <= context.SmallBlind * 20)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * pushAmount);
+                    }
+                    else if (context.MoneyLeft > 0 && context.MyMoneyInTheRound > context.SmallBlind * 20)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+
                     return PlayerAction.CheckOrCall();
                 }
-
-                return CheckOrFoldCustomAction(context);
             }
-
-            if (preFlopCards == CardValueType.Recommended)
+            else
             {
-                if (context.MoneyLeft > 0 && context.MyMoneyInTheRound <= context.SmallBlind * 20)
+                if (preFlopCards == CardValueType.Unplayable)
                 {
-                    return PlayerAction.Raise(context.SmallBlind * pushAmount);
-                }
-                else if (context.MoneyLeft > 0 && context.MyMoneyInTheRound > context.SmallBlind * 20)
-                {
-                    return PlayerAction.Raise(context.MoneyLeft);
+                    return CheckOrFoldCustomAction(context);
                 }
 
-                return PlayerAction.CheckOrCall();
+                if (preFlopCards == CardValueType.Risky || preFlopCards == CardValueType.NotRecommended)
+                {
+                    if (context.MoneyLeft > 0 && context.MoneyToCall <= context.SmallBlind * 6)
+                    {
+                        return PlayerAction.CheckOrCall();
+                    }
+
+                    return CheckOrFoldCustomAction(context);
+                }
+
+                if (preFlopCards == CardValueType.Recommended)
+                {
+                    if (context.MoneyLeft > 0 && context.MyMoneyInTheRound <= context.SmallBlind * 20)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * pushAmount);
+                    }
+                    else if (context.MoneyLeft > 0 && context.MyMoneyInTheRound > context.SmallBlind * 20)
+                    {
+                        return PlayerAction.Raise(context.MoneyLeft);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
             }
 
             return CheckOrFoldCustomAction(context);
