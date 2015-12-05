@@ -9,7 +9,7 @@
     /// </summary>
     public class SpartaVsAlwaysCallSimulation : BaseGameSimulator
     {
-        private readonly IPlayer firstPlayer = new SpartaPlayer();
+        private readonly IPlayer firstPlayer = new SpartaPlayerBeta();
         private readonly IPlayer secondPlayer = new AlwaysCallDummyPlayer();
 
         protected override IPlayer GetFirstPlayer()

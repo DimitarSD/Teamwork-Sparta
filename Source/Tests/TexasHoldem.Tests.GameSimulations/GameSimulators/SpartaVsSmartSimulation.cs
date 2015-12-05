@@ -10,7 +10,7 @@
     /// </summary>
     public class SpartaVsSmartSimulation : BaseGameSimulator
     {
-        private readonly IPlayer firstPlayer = new SpartaPlayer();
+        private readonly IPlayer firstPlayer = new SpartaPlayerBeta();
         private readonly IPlayer secondPlayer = new SmartPlayer();
 
         protected override IPlayer GetFirstPlayer()

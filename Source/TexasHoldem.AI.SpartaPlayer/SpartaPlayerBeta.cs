@@ -10,7 +10,7 @@
     using Spartalayer.Helpers;
     using TexasHoldem.Logic.Players;
 
-    public class SpartaPlayer : BasePlayer
+    public class SpartaPlayerBeta : BasePlayer
     {
         public override string Name { get; } = "SpartaPlayer_" + Guid.NewGuid();
 
