@@ -17,9 +17,9 @@
 
         internal override PlayerAction GetAction()
         {
-            if (base.IsFirst)
+            if (this.IsFirst)
             {
-                if (base.Context.MoneyLeft > 0)
+                if (this.Context.MoneyLeft > 0)
                 {
                     return PlayerAction.Raise(10);
                 }
@@ -28,13 +28,13 @@
             }
             else
             {
-                if (base.Context.MoneyLeft > 0)
+                if (this.Context.MoneyLeft > 0)
                 {
                     return PlayerAction.Raise(20);
                 }
 
                 return PlayerAction.Fold();
-            }            
+            }
         }
     }
 }
