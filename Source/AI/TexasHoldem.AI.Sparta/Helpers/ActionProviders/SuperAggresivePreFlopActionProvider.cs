@@ -38,6 +38,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                     }
                     else
                     {
+                        // less then 6SB left - Going all in to return in the game
                         return PlayerAction.Raise(this.Context.MoneyLeft);
                     }
                 }
@@ -54,6 +55,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                             || (this.firstCard.Type == CardType.Ace || this.secondCard.Type == CardType.Ace)
                             || (this.firstCard.Type == CardType.King || this.secondCard.Type == CardType.King))
                         {
+                            // we have stronger then 61 coeff. or Ace, King kickers
                             return PlayerAction.Raise(this.Context.MoneyLeft);
                         }
                         else
@@ -63,6 +65,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                     }
                     else
                     {
+                        // less then 6SB left - Going all in to return in the game
                         return PlayerAction.Raise(this.Context.MoneyLeft);
                     }
                 }
