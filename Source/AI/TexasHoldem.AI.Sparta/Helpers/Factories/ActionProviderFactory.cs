@@ -11,7 +11,7 @@
     using Logic;
     using Logic.Cards;
 
-    internal class ActionProvidersFactory : IActionProviderFactory
+    internal class ActionProviderFactory : IActionProviderFactory
     {
         //public GetTurnContext Context { get; set; }
 
@@ -30,9 +30,14 @@
                     {
                         return new SuperAggresivePreFlopActionProvider(context, first, second);
                     }
+                    else if (context.MoneyLeft / context.SmallBlind > 15 && context.MoneyLeft / context.SmallBlind <= 50)
+                    {
+                        return new AggresivePreFlopActionProvider(context, first, second);
+                    }
                     else
                     {
-                        return new PreFlopActionProvider(context, first, second);
+                        // ontext.MoneyLeft / context.SmallBlind > 50
+                        return new PassiveAggresivePreFlopActionProvider(context, first, second);
                     }
 
                 }

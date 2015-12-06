@@ -39,6 +39,8 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ActionProviders\AggresivePreFlopActionProvider.cs" />
+    <Compile Include="Helpers\ActionProviders\PassiveAggresivePreFlopActionProvider.cs" />
     <Compile Include="Helpers\ActionProviders\SuperAggresivePreFlopActionProvider.cs" />
     <Compile Include="Helpers\Contracts\IHandEvaluator.cs" />
     <Compile Include="Helpers\Contracts\IPreFlopHandEvaluator.cs" />
