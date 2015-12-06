@@ -28,6 +28,11 @@
                             {
                                 return PlayerAction.Raise(this.Context.MoneyLeft);
                             }
+                            else if (preflopCardsCoefficient > 61.00 && preflopCardsCoefficient < 63.00
+                                && this.Context.MoneyToCall <= this.Context.SmallBlind * 8)
+                            {
+                                return PlayerAction.CheckOrCall();
+                            }
                             else
                             {
                                 return PlayerAction.Fold();
@@ -47,6 +52,59 @@
             }
             else
             {
+                // we are BB (second)
+                if (this.Context.MoneyLeft > 0)
+                {
+                    if (this.Context.CanCheck && this.Context.MyMoneyInTheRound == this.Context.SmallBlind)
+                    {
+                        // opponent calls one SB only
+                        if (preflopCardsCoefficient >= 55.00)
+                        {
+                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                        }
+                        else
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                    }
+                    else if (this.Context.CanCheck && this.Context.MyMoneyInTheRound > this.Context.SmallBlind)
+                    {
+                        // we can check but our money are larger then SB (previous raises are found)
+                        return PlayerAction.CheckOrCall();
+                    }
+                    else if (!this.Context.CanCheck && this.Context.MoneyToCall < this.Context.SmallBlind * 6)
+                    {
+                        // opponent raises < 3-Bet
+                        if (preflopCardsCoefficient >= 61.00)
+                        {
+                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                        }
+                        else if (preflopCardsCoefficient >= 55.00 && preflopCardsCoefficient < 61.00)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else
+                        {
+                            return PlayerAction.Fold();
+                        }
+                    }
+                    else if (!this.Context.CanCheck && this.Context.MoneyToCall >= this.Context.SmallBlind * 6)
+                    {
+                        // opponent raises >= 3-Bet
+                        if (preflopCardsCoefficient >= 65.00)
+                        {
+                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                        }
+                        else
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+
+                return PlayerAction.CheckOrCall();
             }
 
             return PlayerAction.CheckOrCall();
