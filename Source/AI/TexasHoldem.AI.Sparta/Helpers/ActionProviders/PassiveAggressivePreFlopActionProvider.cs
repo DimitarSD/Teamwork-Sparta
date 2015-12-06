@@ -11,8 +11,8 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 {
     internal class PassiveAggressivePreFlopActionProvider : ActionProvider
     {
-        internal PassiveAggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second)
-            : base(context, first, second)
+        internal PassiveAggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second, bool isFirst)
+            : base(context, first, second, isFirst)
         {
             this.handEvaluator = new PreFlopHandEvaluator();
         }
@@ -21,17 +21,22 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
         {
             var preflopCardsCoefficient = this.handEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
 
-            if (this.IsFirst)
+            if (this.Context.MoneyLeft > 0)
             {
-                if (this.Context.MoneyLeft > 0)
+                if (this.isFirst)
                 {
                     if (preflopCardsCoefficient >= 58.00)
                     {
+                        // has he re-raised
                         if (!this.Context.CanCheck && this.Context.MoneyToCall > this.Context.SmallBlind)
                         {
                             if (preflopCardsCoefficient >= 63.00)
                             {
-                                return PlayerAction.Raise(this.Context.MoneyLeft);
+                                return PlayerAction.Raise(this.Context.CurrentMaxBet + this.Context.SmallBlind * 2);
+                            }
+                            else if (preflopCardsCoefficient >= 58.00 && preflopCardsCoefficient < 63.00)
+                            {
+                                return PlayerAction.CheckOrCall();
                             }
                             else
                             {
@@ -46,11 +51,55 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                         return PlayerAction.Fold();
                     }
                 }
-
-                return PlayerAction.CheckOrCall();
+                else
+                {
+                    // todo : we are second
+                    if (this.Context.CanCheck && this.Context.MyMoneyInTheRound == this.Context.SmallBlind * 2)
+                    {
+                        if (preflopCardsCoefficient >= 55.00)
+                        {
+                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                        }
+                        else
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                    }
+                    else if (!this.Context.CanCheck && this.Context.MoneyToCall <= this.Context.SmallBlind * 5)
+                    {
+                        if (preflopCardsCoefficient >= 61.00)
+                        {
+                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                        }
+                        else if (preflopCardsCoefficient >= 58.00 && preflopCardsCoefficient < 61.00)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else
+                        {
+                            // preflopCardsCoefficient < 58.00
+                            return PlayerAction.Fold();
+                        }
+                    }
+                    else
+                    {
+                        // he has raised with 3BB (or 6 SB)
+                        if (preflopCardsCoefficient >= 65.00)
+                        {
+                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                        }
+                        else if (preflopCardsCoefficient >= 62.00 && preflopCardsCoefficient < 65.00)
+                        {
+                            return PlayerAction.CheckOrCall();
+                        }
+                        else
+                        {
+                            return PlayerAction.Fold();
+                        }
+                    }
+                }
             }
-
-            return null;
+            return PlayerAction.CheckOrCall();
         }
     }
 }

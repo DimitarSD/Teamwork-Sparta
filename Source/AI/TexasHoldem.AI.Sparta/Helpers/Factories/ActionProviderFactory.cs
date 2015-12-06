@@ -10,52 +10,67 @@
     using ActionProviders;
     using Logic;
     using Logic.Cards;
+    using ActionProviders.FlopProviders;
 
     internal class ActionProviderFactory : IActionProviderFactory
     {
-        //public GetTurnContext Context { get; set; }
+        private bool isFirst;
+        private GetTurnContext context;
 
-        public ActionProvider GetActionProvider(GetTurnContext context, Card first, Card second, IReadOnlyCollection<Card> community)
+        public ActionProvider GetActionProvider(GetTurnContext currentContext, Card first, Card second, IReadOnlyCollection<Card> community)
         {
-            if (context == null)
+            this.context = currentContext;
+
+            if (this.context == null)
             {
                 throw new NullReferenceException("Context must be set.");
             }
 
-            if (context.RoundType == GameRoundType.PreFlop)
+            if (this.context.RoundType == GameRoundType.PreFlop)
             {
-                if (context.MoneyLeft < 400)
+                if (this.context.MyMoneyInTheRound == this.context.SmallBlind
+                    && this.context.MoneyToCall == this.context.SmallBlind
+                    && !this.context.CanCheck)
                 {
-                    if (context.MoneyLeft / context.SmallBlind <= 15)
+                    this.isFirst = true;
+                }
+                else if (this.context.MyMoneyInTheRound == this.context.SmallBlind * 2 &&
+                        this.context.PreviousRoundActions.Count == 3)
+                {
+                    this.isFirst = false;
+                }
+
+                if (this.context.MoneyLeft < 200)
+                {
+                    if (this.context.MoneyLeft / this.context.SmallBlind <= 15)
                     {
-                        return new SuperAggressivePreFlopActionProvider(context, first, second);
+                        return new SuperAggressivePreFlopActionProvider(this.context, first, second, this.isFirst);
                     }
-                    else if (context.MoneyLeft / context.SmallBlind > 15 && context.MoneyLeft / context.SmallBlind <= 50)
+                    else if (this.context.MoneyLeft / this.context.SmallBlind > 15 && this.context.MoneyLeft / this.context.SmallBlind <= 50)
                     {
-                        return new SuperAggressivePreFlopActionProvider(context, first, second);
+                        return new AggressivePreFlopActionProvider(this.context, first, second, this.isFirst);
                     }
                     else
                     {
                         // ontext.MoneyLeft / context.SmallBlind > 50
-                        return new SuperAggressivePreFlopActionProvider(context, first, second);
+                        return new AggressivePreFlopActionProvider(this.context, first, second, this.isFirst);
                     }
-
                 }
 
-                return new AggressivePreFlopActionProvider(context, first, second);
+                return new AggressivePreFlopActionProvider(this.context, first, second, this.isFirst);
             }
-            else if (context.RoundType == GameRoundType.Flop)
+            else if (this.context.RoundType == GameRoundType.Flop)
             {
-                return new AggressivePreFlopActionProvider(context, first, second);
+                return new PassiveAggressiveFlopProvider(this.context, first, second, community, this.isFirst);
             }
-            else if (context.RoundType == GameRoundType.Turn)
+            else if (this.context.RoundType == GameRoundType.Turn)
             {
-                return new AggressivePreFlopActionProvider(context, first, second);
+                return new PassiveAggressiveFlopProvider(this.context, first, second, community, this.isFirst);
             }
             else
             {
                 // RIVER (final state)
-                return new AggressivePreFlopActionProvider(context, first, second);
+                return new PassiveAggressiveFlopProvider(this.context, first, second, community, this.isFirst);
             }
         }
     }

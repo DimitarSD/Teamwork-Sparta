@@ -11,8 +11,8 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 {
     internal class SuperAggressivePreFlopActionProvider : ActionProvider
     {
-        internal SuperAggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second)
-            : base(context, first, second)
+        internal SuperAggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second, bool isFirst)
+            : base(context, first, second, isFirst)
         {
             this.handEvaluator = new PreFlopHandEvaluator();
         }
@@ -21,17 +21,17 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
         {
             var preflopCardsCoefficient = this.handEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
 
-            if (this.IsFirst)
+            if (this.isFirst)
             {
                 if (this.Context.MoneyLeft > 0)
                 {
                     if (this.Context.MoneyLeft > this.Context.SmallBlind * 6)
                     {
-                        if (preflopCardsCoefficient >= 55.00)
+                        if (preflopCardsCoefficient >= 52.00)
                         {
                             return PlayerAction.Raise(this.Context.MoneyLeft);
                         }
-                        else if (preflopCardsCoefficient < 55.00)
+                        else if (preflopCardsCoefficient < 52.00)
                         {
                             return PlayerAction.Fold();
                         }
@@ -51,7 +51,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                 {
                     if (this.Context.MoneyLeft > this.Context.SmallBlind * 6)
                     {
-                        if (preflopCardsCoefficient >= 61.00
+                        if (preflopCardsCoefficient >= 58.00
                             || (this.firstCard.Type == CardType.Ace || this.secondCard.Type == CardType.Ace)
                             || (this.firstCard.Type == CardType.King || this.secondCard.Type == CardType.King))
                         {

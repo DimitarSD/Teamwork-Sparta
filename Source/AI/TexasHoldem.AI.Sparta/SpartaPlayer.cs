@@ -10,7 +10,8 @@
 
     public class SpartaPlayer : BasePlayer
     {
-        private IActionProviderFactory actionProviderFactory;
+        private readonly IActionProviderFactory actionProviderFactory;
+        private bool isFirts;
 
         public SpartaPlayer(IActionProviderFactory actionProviderFactory)
         {
@@ -28,6 +29,7 @@
         {
             var actionProvider = this.actionProviderFactory.GetActionProvider(context, this.FirstCard, this.SecondCard, this.CommunityCards);
 
+            
             return actionProvider.GetAction();
         }
     }

@@ -6,8 +6,8 @@
 
     internal class AggressivePreFlopActionProvider : ActionProvider
     {
-        internal AggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second)
-            : base(context, first, second)
+        internal AggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second, bool isFirst)
+            : base(context, first, second, isFirst)
         {
             this.handEvaluator = new PreFlopHandEvaluator();
         }
@@ -18,18 +18,17 @@
 
             if (this.Context.MoneyLeft > 0)
             {
-                if (this.IsFirst)
+                if (this.isFirst)
                 {
-
-                    if (preflopCardsCoefficient >= 61.00)
+                    if (preflopCardsCoefficient >= 56.00)
                     {
                         if (!this.Context.CanCheck && this.Context.MoneyToCall > this.Context.SmallBlind)
                         {
-                            if (preflopCardsCoefficient >= 63.00)
+                            if (preflopCardsCoefficient >= 61.00)
                             {
                                 return PlayerAction.Raise(this.Context.MoneyLeft);
                             }
-                            else if (preflopCardsCoefficient > 61.00 && preflopCardsCoefficient < 63.00
+                            else if (preflopCardsCoefficient > 56.00 && preflopCardsCoefficient < 61.00
                                 && this.Context.MoneyToCall <= this.Context.SmallBlind * 8)
                             {
                                 return PlayerAction.CheckOrCall();
@@ -44,17 +43,14 @@
                     }
                     else
                     {
-                        // preflopCardsCoefficient < 61.00)
+                        // preflopCardsCoefficient < 56.00)
                         return PlayerAction.Fold();
                     }
-
-
                 }
                 else
                 {
                     // we are BB (second)
-
-                    if (this.Context.CanCheck && this.Context.MyMoneyInTheRound == this.Context.SmallBlind)
+                    if (this.Context.CanCheck && this.Context.MyMoneyInTheRound == this.Context.SmallBlind * 2)
                     {
                         // opponent calls one SB only
                         if (preflopCardsCoefficient >= 55.00)
@@ -66,19 +62,14 @@
                             return PlayerAction.CheckOrCall();
                         }
                     }
-                    else if (this.Context.CanCheck && this.Context.MyMoneyInTheRound > this.Context.SmallBlind)
-                    {
-                        // we can check but our money are larger then SB (previous raises are found)
-                        return PlayerAction.CheckOrCall();
-                    }
                     else if (!this.Context.CanCheck && this.Context.MoneyToCall < this.Context.SmallBlind * 6)
                     {
                         // opponent raises < 3-Bet
-                        if (preflopCardsCoefficient >= 61.00)
+                        if (preflopCardsCoefficient >= 56.00)
                         {
                             return PlayerAction.Raise(this.Context.SmallBlind * 6);
                         }
-                        else if (preflopCardsCoefficient >= 55.00 && preflopCardsCoefficient < 61.00)
+                        else if (preflopCardsCoefficient >= 53.00 && preflopCardsCoefficient < 56.00)
                         {
                             return PlayerAction.CheckOrCall();
                         }
@@ -90,7 +81,7 @@
                     else if (!this.Context.CanCheck && this.Context.MoneyToCall >= this.Context.SmallBlind * 6)
                     {
                         // opponent raises >= 3-Bet
-                        if (preflopCardsCoefficient >= 65.00)
+                        if (preflopCardsCoefficient >= 60.00)
                         {
                             return PlayerAction.Raise(this.Context.SmallBlind * 6);
                         }
@@ -101,11 +92,10 @@
                     }
 
                     return PlayerAction.CheckOrCall();
-
                 }
             }
 
-            return PlayerAction.CheckOrCall();
+            return PlayerAction.Raise(77);
         }
     }
 }

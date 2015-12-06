@@ -10,14 +10,14 @@
 
     internal class PreFlopActionProvider : ActionProvider
     {
-        internal PreFlopActionProvider(GetTurnContext context, Card first, Card second)
-            : base(context, first, second)
+        internal PreFlopActionProvider(GetTurnContext context, Card first, Card second, bool isFirst)
+            : base(context, first, second, isFirst)
         {
         }
 
         internal override PlayerAction GetAction()
         {
-            if (this.IsFirst)
+            if (this.isFirst)
             {
                 if (this.Context.MoneyLeft > 0)
                 {

@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ActionProviders\AggressivePreFlopActionProvider.cs" />
+    <Compile Include="Helpers\ActionProviders\FlopProviders\PassiveAggressiveFlopProvider.cs" />
     <Compile Include="Helpers\ActionProviders\PassiveAggressivePreFlopActionProvider.cs" />
     <Compile Include="Helpers\ActionProviders\SuperAggressivePreFlopActionProvider.cs" />
     <Compile Include="Helpers\Contracts\IHandEvaluator.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Helpers\ActionProviders\ActionProvider.cs" />
     <Compile Include="Helpers\ActionProviders\PreFlopActionProvider.cs" />
     <Compile Include="Helpers\Contracts\IActionProviderFactory.cs" />
+    <Compile Include="Helpers\HandEvaluators\PostFlopHandEvaluator.cs" />
     <Compile Include="Helpers\HandEvaluators\PreFlopHandEvaluator.cs" />
     <Compile Include="SpartaPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
