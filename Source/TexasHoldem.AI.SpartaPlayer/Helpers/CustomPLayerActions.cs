@@ -30,17 +30,13 @@
                         {
                             return CheckOrFoldCustomAction(context);
                         }
-                        else if (!context.CanCheck && context.MoneyToCall < context.SmallBlind * 11 && context.MoneyToCall > context.SmallBlind * 6)
-                        {
-                            return PlayerAction.CheckOrCall();
-                        }
                         else
                         {
                             return PlayerAction.Raise(context.SmallBlind * raiseAmount/2);
                         }
                     }
 
-                    return PlayerAction.CheckOrCall();
+                    return CheckOrFoldCustomAction(context);
                 }
                 else if (preFlopCards == CardValueType.Risky)
                 {
@@ -60,7 +56,7 @@
                         }
                         else if (!context.CanCheck && context.MoneyToCall < context.SmallBlind * 21 && context.MoneyToCall > context.SmallBlind * 11)
                         {
-                            return PlayerAction.CheckOrCall();
+                            return CheckOrFoldCustomAction(context);
                         }
                         else
                         {
@@ -96,7 +92,7 @@
                         }
                     }
 
-                    return PlayerAction.CheckOrCall();
+                    return CheckOrFoldCustomAction(context);
                 }
             }
 
@@ -117,7 +113,7 @@
                         }
                         else if (context.CanCheck && context.MyMoneyInTheRound > context.SmallBlind)
                         {
-                            return PlayerAction.CheckOrCall();
+                            return CheckOrFoldCustomAction(context);
                         }
                         else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind * 11)
                         {
@@ -125,7 +121,7 @@
                         }
                         else if (!context.CanCheck && context.MoneyToCall < context.SmallBlind * 11 && context.MoneyToCall > context.SmallBlind * 6)
                         {
-                            return PlayerAction.CheckOrCall();
+                            return CheckOrFoldCustomAction(context);
                         }
                         else
                         {
@@ -133,7 +129,7 @@
                         }
                     }
 
-                    return PlayerAction.CheckOrCall();
+                    return CheckOrFoldCustomAction(context);
                 }
                 else if (preFlopCards == CardValueType.Risky)
                 {
@@ -153,7 +149,7 @@
                         }
                         else if (!context.CanCheck && context.MoneyToCall < context.SmallBlind * 21 && context.MoneyToCall > context.SmallBlind * 11)
                         {
-                            return PlayerAction.CheckOrCall();
+                            return CheckOrFoldCustomAction(context);
                         }
                         else
                         {
@@ -161,7 +157,7 @@
                         }
                     }
 
-                    return PlayerAction.CheckOrCall();
+                    return CheckOrFoldCustomAction(context);
                 }
                 else if (preFlopCards == CardValueType.Recommended)
                 {
@@ -282,7 +278,7 @@
                         }
                         else
                         {
-                            return PlayerAction.CheckOrCall();
+                            return CheckOrFoldCustomAction(context);
                         }
                     }
                     else if (context.MoneyLeft > 0 && CustomHandStreightChecks.GotVeryStrongHand(combination))
@@ -299,7 +295,7 @@
                         }
                         else
                         {
-                            return PlayerAction.CheckOrCall();
+                            return CheckOrFoldCustomAction(context);
                         }
                     }
                     else
@@ -376,7 +372,7 @@
                         }
                         else
                         {
-                            return PlayerAction.CheckOrCall();
+                            return CheckOrFoldCustomAction(context);
                         }
                     }
                 }

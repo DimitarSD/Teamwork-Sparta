@@ -30,11 +30,11 @@
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
                             KickerAgressionStarted = true;
-                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 7, 15);
                         }
 
                         // we are first and we can paid SmallBlind , can Raise and can Fold
-                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 6, 10);
                     }
                     else if (!context.CanCheck && context.MoneyToCall > context.SmallBlind)
                     {
@@ -44,10 +44,10 @@
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
                             KickerAgressionStarted = true;
-                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 7, 14);
                         }
 
-                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 11, 21);
+                        return CustomPlayerActions.PassivePlayerActionPreFlop(context, preFlopCards, 6, 10);
                     }
                     else if (context.CanCheck)
                     {
@@ -57,10 +57,10 @@
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
                             KickerAgressionStarted = true;
-                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 6, 10);
                         }
 
-                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                        return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 6, 10);
                     }
                     else
                     {
@@ -68,7 +68,7 @@
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
                             KickerAgressionStarted = true;
-                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
+                            return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 6, 10);
                         }
 
                         return PlayerAction.CheckOrCall();
