@@ -17,12 +17,24 @@
 
         internal override PlayerAction GetAction()
         {
-            if (base.context.MoneyLeft > 0)
+            if (base.IsFirst)
             {
-                return PlayerAction.Raise(base.context.MoneyLeft);
-            }
+                if (base.Context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise(10);
+                }
 
-            return PlayerAction.Fold();
+                return PlayerAction.Fold();
+            }
+            else
+            {
+                if (base.Context.MoneyLeft > 0)
+                {
+                    return PlayerAction.Raise(20);
+                }
+
+                return PlayerAction.Fold();
+            }            
         }
     }
 }

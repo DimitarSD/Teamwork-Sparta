@@ -17,9 +17,9 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 
         internal override PlayerAction GetAction()
         {
-            if (base.context.MoneyLeft > 0)
+            if (base.Context.MoneyLeft > 0)
             {
-                return PlayerAction.Raise(base.context.MoneyLeft);
+                return PlayerAction.Raise(base.Context.MoneyLeft);
             }
 
             return PlayerAction.Fold();
