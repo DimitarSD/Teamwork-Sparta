@@ -39,8 +39,11 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ActionProviders\SuperAggresivePreFlopActionProvider.cs" />
+    <Compile Include="Helpers\Factories\ActionProviderFactory.cs" />
     <Compile Include="Helpers\ActionProviders\ActionProvider.cs" />
     <Compile Include="Helpers\ActionProviders\PreFlopActionProvider.cs" />
+    <Compile Include="Helpers\Contracts\IActionProviderFactory.cs" />
     <Compile Include="SpartaPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

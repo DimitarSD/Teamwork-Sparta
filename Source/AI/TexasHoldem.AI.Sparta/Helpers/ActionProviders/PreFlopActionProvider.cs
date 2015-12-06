@@ -1,17 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TexasHoldem.Logic.Players;
-
-namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
+﻿namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 {
-    class PreFlopActionProvider : ActionProvider
+    using Logic.Cards;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using TexasHoldem.Logic.Players;
+
+    internal class PreFlopActionProvider : ActionProvider
     {
+        internal PreFlopActionProvider(GetTurnContext context, Card first, Card second)
+            : base(context, first, second)
+        {
+        }
+
         internal override PlayerAction GetAction()
         {
-            throw new NotImplementedException();
+            if (base.context.MoneyLeft > 0)
+            {
+                return PlayerAction.Raise(base.context.MoneyLeft);
+            }
+
+            return PlayerAction.Fold();
         }
     }
 }

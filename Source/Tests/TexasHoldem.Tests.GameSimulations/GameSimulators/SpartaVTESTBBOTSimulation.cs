@@ -2,11 +2,12 @@
 {
     using TexasHoldem.AI.SpartaPlayer;
     using TexasHoldem.Logic.Players;
+    using TexasHoldem.AI.Sparta;
 
     public class SpartaVTESTBBOTSimulation : BaseGameSimulator
     {
         private readonly IPlayer firstPlayer = new SpartaPlayerBeta();
-        private readonly IPlayer secondPlayer = new TestBot();
+        private readonly IPlayer secondPlayer = new SpartaPlayer();
 
         protected override IPlayer GetFirstPlayer()
         {

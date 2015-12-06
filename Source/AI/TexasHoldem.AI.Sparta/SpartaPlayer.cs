@@ -1,23 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TexasHoldem.Logic.Players;
-
-namespace TexasHoldem.AI.Sparta
+﻿namespace TexasHoldem.AI.Sparta
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using TexasHoldem.Logic.Players;
+    using TexasHoldem.AI.Sparta.Helpers.Factories;
+    using TexasHoldem.AI.Sparta.Helpers.Contracts;
+
     public class SpartaPlayer : BasePlayer
     {
+        private IActionProviderFactory actionProviderFactory;
+
+        public SpartaPlayer(IActionProviderFactory actionProviderFactory)
+        {
+            this.actionProviderFactory = actionProviderFactory;
+        }
+
+        public SpartaPlayer()
+            : this(new ActionProvidersFactory())
+        {
+        }
 
         public override string Name { get; } = "Sparta" + Guid.NewGuid();
 
         public override PlayerAction GetTurn(GetTurnContext context)
         {
+            var actionProvider = this.actionProviderFactory.GetActionProvider(context, this.FirstCard, this.SecondCard, this.CommunityCards);
 
-
-
-
-            return null;
+            return actionProvider.GetAction();
         }
     }
 }
