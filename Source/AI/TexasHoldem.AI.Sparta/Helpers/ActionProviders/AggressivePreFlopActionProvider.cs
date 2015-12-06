@@ -16,10 +16,11 @@
         {
             var preflopCardsCoefficient = this.handEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
 
-            if (this.IsFirst)
+            if (this.Context.MoneyLeft > 0)
             {
-                if (this.Context.MoneyLeft > 0)
+                if (this.IsFirst)
                 {
+
                     if (preflopCardsCoefficient >= 61.00)
                     {
                         if (!this.Context.CanCheck && this.Context.MoneyToCall > this.Context.SmallBlind)
@@ -46,15 +47,13 @@
                         // preflopCardsCoefficient < 61.00)
                         return PlayerAction.Fold();
                     }
-                }
 
-                return PlayerAction.CheckOrCall();
-            }
-            else
-            {
-                // we are BB (second)
-                if (this.Context.MoneyLeft > 0)
+
+                }
+                else
                 {
+                    // we are BB (second)
+
                     if (this.Context.CanCheck && this.Context.MyMoneyInTheRound == this.Context.SmallBlind)
                     {
                         // opponent calls one SB only
@@ -97,14 +96,13 @@
                         }
                         else
                         {
-                            return PlayerAction.CheckOrCall();
+                            return PlayerAction.Fold();
                         }
                     }
 
                     return PlayerAction.CheckOrCall();
-                }
 
-                return PlayerAction.CheckOrCall();
+                }
             }
 
             return PlayerAction.CheckOrCall();
