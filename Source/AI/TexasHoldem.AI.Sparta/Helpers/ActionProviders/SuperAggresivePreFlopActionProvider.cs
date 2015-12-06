@@ -19,13 +19,27 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 
         internal override PlayerAction GetAction()
         {
+            var preflopCardsCoefficient = this.handEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
+
             if (this.IsFirst)
             {
-                var preflopCardsCoefficient = this.handEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
-
                 if (this.Context.MoneyLeft > 0)
                 {
-                    return PlayerAction.Raise(10);
+                    if (this.Context.MoneyLeft > this.Context.SmallBlind * 6)
+                    {
+                        if (preflopCardsCoefficient >= 55.00)
+                        {
+                            return PlayerAction.Raise(this.Context.MoneyLeft);
+                        }
+                        else if (preflopCardsCoefficient < 55.00)
+                        {
+                            return PlayerAction.Fold();
+                        }
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(this.Context.MoneyLeft);
+                    }
                 }
 
                 return PlayerAction.CheckOrCall();
@@ -34,7 +48,23 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
             {
                 if (this.Context.MoneyLeft > 0)
                 {
-                    return PlayerAction.Raise(20);
+                    if (this.Context.MoneyLeft > this.Context.SmallBlind * 6)
+                    {
+                        if (preflopCardsCoefficient >= 61.00
+                            || (this.firstCard.Type == CardType.Ace || this.secondCard.Type == CardType.Ace)
+                            || (this.firstCard.Type == CardType.King || this.secondCard.Type == CardType.King))
+                        {
+                            return PlayerAction.Raise(this.Context.MoneyLeft);
+                        }
+                        else
+                        {
+                            return PlayerAction.Fold();
+                        }
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(this.Context.MoneyLeft);
+                    }
                 }
 
                 return PlayerAction.CheckOrCall();
