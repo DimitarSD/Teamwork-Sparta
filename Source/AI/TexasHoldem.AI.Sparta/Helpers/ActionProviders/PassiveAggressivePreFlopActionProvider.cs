@@ -19,8 +19,36 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 
         internal override PlayerAction GetAction()
         {
+            var preflopCardsCoefficient = this.handEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
 
+            if (this.IsFirst)
+            {
+                if (this.Context.MoneyLeft > 0)
+                {
+                    if (preflopCardsCoefficient >= 58.00)
+                    {
+                        if (!this.Context.CanCheck && this.Context.MoneyToCall > this.Context.SmallBlind)
+                        {
+                            if (preflopCardsCoefficient >= 63.00)
+                            {
+                                return PlayerAction.Raise(this.Context.MoneyLeft);
+                            }
+                            else
+                            {
+                                return PlayerAction.Fold();
+                            }
+                        }
 
+                        return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                    }
+                    else
+                    {
+                        return PlayerAction.Fold();
+                    }
+                }
+
+                return PlayerAction.CheckOrCall();
+            }
 
             return null;
         }
