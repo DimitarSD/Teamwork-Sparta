@@ -44,6 +44,7 @@
     <Compile Include="Helpers\ActionProviders\ActionProvider.cs" />
     <Compile Include="Helpers\ActionProviders\PreFlopActionProvider.cs" />
     <Compile Include="Helpers\Contracts\IActionProviderFactory.cs" />
+    <Compile Include="Helpers\HandEvaluators\PreFlopHandEvaluator.cs" />
     <Compile Include="SpartaPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

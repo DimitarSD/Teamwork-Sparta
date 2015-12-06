@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TexasHoldem.AI.Sparta.Helpers.HandEvaluators;
 using TexasHoldem.Logic.Cards;
 using TexasHoldem.Logic.Players;
 
@@ -19,6 +20,8 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
         {
             if (this.IsFirst)
             {
+                var preflopCardsCoefficient = PreFlopHandEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
+
                 if (this.Context.MoneyLeft > 0)
                 {
                     return PlayerAction.Raise(10);
