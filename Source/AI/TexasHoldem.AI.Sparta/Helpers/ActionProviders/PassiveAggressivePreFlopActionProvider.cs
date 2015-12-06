@@ -9,9 +9,9 @@ using TexasHoldem.Logic.Players;
 
 namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 {
-    internal class PassiveAggresivePreFlopActionProvider : ActionProvider
+    internal class PassiveAggressivePreFlopActionProvider : ActionProvider
     {
-        internal PassiveAggresivePreFlopActionProvider(GetTurnContext context, Card first, Card second)
+        internal PassiveAggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second)
             : base(context, first, second)
         {
             this.handEvaluator = new PreFlopHandEvaluator();

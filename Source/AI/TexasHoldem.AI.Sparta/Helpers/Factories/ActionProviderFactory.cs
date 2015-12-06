@@ -28,16 +28,16 @@
                 {
                     if (context.MoneyLeft / context.SmallBlind <= 15)
                     {
-                        return new SuperAggresivePreFlopActionProvider(context, first, second);
+                        return new SuperAggressivePreFlopActionProvider(context, first, second);
                     }
                     else if (context.MoneyLeft / context.SmallBlind > 15 && context.MoneyLeft / context.SmallBlind <= 50)
                     {
-                        return new AggresivePreFlopActionProvider(context, first, second);
+                        return new AggressivePreFlopActionProvider(context, first, second);
                     }
                     else
                     {
                         // ontext.MoneyLeft / context.SmallBlind > 50
-                        return new PassiveAggresivePreFlopActionProvider(context, first, second);
+                        return new PassiveAggressivePreFlopActionProvider(context, first, second);
                     }
 
                 }

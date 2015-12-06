@@ -4,9 +4,9 @@
     using TexasHoldem.Logic.Cards;
     using TexasHoldem.Logic.Players;
 
-    internal class AggresivePreFlopActionProvider : ActionProvider
+    internal class AggressivePreFlopActionProvider : ActionProvider
     {
-        internal AggresivePreFlopActionProvider(GetTurnContext context, Card first, Card second)
+        internal AggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second)
             : base(context, first, second)
         {
             this.handEvaluator = new PreFlopHandEvaluator();
