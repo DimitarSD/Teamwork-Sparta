@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TexasHoldem.Logic.Cards;
-using TexasHoldem.Logic.Players;
-
-namespace TexasHoldem.AI.Sparta.Helpers.HandEvaluators
+﻿namespace TexasHoldem.AI.Sparta.Helpers.HandEvaluators
 {
-    internal class PreFlopHandEvaluator
+    using Contracts;
+    using System;
+    using TexasHoldem.Logic.Cards;
+    using TexasHoldem.Logic.Players;
+
+    internal class PreFlopHandEvaluator : IPreFlopHandEvaluator
     {
         private const int MaxCardTypeValue = 14;
 
@@ -29,7 +26,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.HandEvaluators
                 { 52.94, 48.42, 45.10, 42.04, 39.23, 36.51, 34.08, 31.71, 31.07, 31.19, 30.11, 29.23, 49.38 },  // A2o K2o Q2o J2o T2o 92o 82o 72o 62o 52o 42o 32o 22
         };
 
-        public static double PreFlopCoefficient(Card firstCard, Card secondCard)
+        public double PreFlopCoefficient(Card firstCard, Card secondCard)
         {
             var value = firstCard.Suit == secondCard.Suit
                           ? (firstCard.Type > secondCard.Type

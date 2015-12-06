@@ -1,5 +1,6 @@
 ﻿namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 {
+    using Contracts;
     using Logic.Cards;
     using TexasHoldem.Logic.Players;
 
@@ -9,6 +10,7 @@
         protected readonly bool IsFirst;
         protected Card firstCard;
         protected Card secondCard;
+        protected IHandEvaluator handEvaluator;
 
         public ActionProvider(GetTurnContext context, Card first, Card second)
         {

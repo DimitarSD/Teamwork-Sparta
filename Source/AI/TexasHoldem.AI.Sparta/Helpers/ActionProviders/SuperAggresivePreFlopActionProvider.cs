@@ -14,13 +14,14 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
         internal SuperAggresivePreFlopActionProvider(GetTurnContext context, Card first, Card second)
             : base(context, first, second)
         {
+            this.handEvaluator = new PreFlopHandEvaluator();
         }
 
         internal override PlayerAction GetAction()
         {
             if (this.IsFirst)
             {
-                var preflopCardsCoefficient = PreFlopHandEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
+                var preflopCardsCoefficient = this.handEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
 
                 if (this.Context.MoneyLeft > 0)
                 {

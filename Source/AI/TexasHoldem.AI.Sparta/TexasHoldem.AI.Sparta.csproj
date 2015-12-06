@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ActionProviders\SuperAggresivePreFlopActionProvider.cs" />
+    <Compile Include="Helpers\Contracts\IHandEvaluator.cs" />
+    <Compile Include="Helpers\Contracts\IPreFlopHandEvaluator.cs" />
     <Compile Include="Helpers\Factories\ActionProviderFactory.cs" />
     <Compile Include="Helpers\ActionProviders\ActionProvider.cs" />
     <Compile Include="Helpers\ActionProviders\PreFlopActionProvider.cs" />
