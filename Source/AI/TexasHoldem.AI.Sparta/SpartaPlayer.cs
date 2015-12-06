@@ -18,7 +18,7 @@
         }
 
         public SpartaPlayer()
-            : this(new ActionProvidersFactory())
+            : this(new ActionProviderFactory())
         {
         }
 
