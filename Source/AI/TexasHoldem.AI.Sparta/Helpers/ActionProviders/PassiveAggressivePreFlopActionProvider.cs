@@ -19,7 +19,10 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 
         internal override PlayerAction GetAction()
         {
-            throw new NotImplementedException();
+
+
+
+            return null;
         }
     }
 }
