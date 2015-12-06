@@ -32,21 +32,30 @@
                     }
                     else if (context.MoneyLeft / context.SmallBlind > 15 && context.MoneyLeft / context.SmallBlind <= 50)
                     {
-                        return new AggressivePreFlopActionProvider(context, first, second);
+                        return new SuperAggressivePreFlopActionProvider(context, first, second);
                     }
                     else
                     {
                         // ontext.MoneyLeft / context.SmallBlind > 50
-                        return new PassiveAggressivePreFlopActionProvider(context, first, second);
+                        return new SuperAggressivePreFlopActionProvider(context, first, second);
                     }
 
                 }
 
-                return new PreFlopActionProvider(context, first, second);
+                return new AggressivePreFlopActionProvider(context, first, second);
+            }
+            else if (context.RoundType == GameRoundType.Flop)
+            {
+                return new AggressivePreFlopActionProvider(context, first, second);
+            }
+            else if (context.RoundType == GameRoundType.Turn)
+            {
+                return new AggressivePreFlopActionProvider(context, first, second);
             }
             else
             {
-                return new PreFlopActionProvider(context, first, second);
+                // RIVER (final state)
+                return new AggressivePreFlopActionProvider(context, first, second);
             }
         }
     }

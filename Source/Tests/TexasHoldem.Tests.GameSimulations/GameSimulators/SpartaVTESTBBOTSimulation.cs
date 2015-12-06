@@ -7,7 +7,7 @@
     public class SpartaVTESTBBOTSimulation : BaseGameSimulator
     {
         private readonly IPlayer firstPlayer = new SpartaPlayerBeta();
-        private readonly IPlayer secondPlayer = new SpartaPlayer();
+        private readonly IPlayer secondPlayer = new TestBot();
 
         protected override IPlayer GetFirstPlayer()
         {
