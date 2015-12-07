@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TexasHoldem.AI.SpartaPlayer.Helpers
+﻿namespace TexasHoldem.AI.SpartaPlayer.Helpers
 {
     public enum CardValueType
     {

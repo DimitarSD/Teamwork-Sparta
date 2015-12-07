@@ -1,8 +1,7 @@
 ﻿namespace TexasHoldem.UI.Console
 {
-    using AI.Sparta;
     using System;
-
+    using AI.Sparta;
     using TexasHoldem.AI.SpartaPlayer;
     using TexasHoldem.Logic.GameMechanics;
 

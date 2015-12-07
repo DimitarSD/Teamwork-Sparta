@@ -12,7 +12,7 @@
 
     public static class CustomStackActions
     {
-        private static bool KickerAgressionStarted = false;
+        private static bool kickerAgressionStarted = false;
 
         public static PlayerAction NormalStackMethod(GetTurnContext context, CardValueType preFlopCards, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
@@ -29,7 +29,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 7, 15);
                         }
 
@@ -43,7 +43,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 7, 14);
                         }
 
@@ -56,7 +56,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 6, 10);
                         }
 
@@ -67,7 +67,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 6, 10);
                         }
 
@@ -82,7 +82,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                         }
 
@@ -95,7 +95,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                         }
 
@@ -108,7 +108,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                         }
 
@@ -119,13 +119,12 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                         }
 
                         return PlayerAction.CheckOrCall();
                     }
-
                 }
                 else if (context.MoneyLeft / context.SmallBlind <= 15)
                 {
@@ -135,7 +134,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                         }
 
@@ -148,7 +147,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                         }
 
@@ -161,7 +160,7 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                         }
 
@@ -172,26 +171,24 @@
                         if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                             || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                         {
-                            KickerAgressionStarted = true;
+                            kickerAgressionStarted = true;
                             return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                         }
 
                         return PlayerAction.CheckOrCall();
                     }
-
                 }
                 else
                 {
                     if (CustomHandStreightChecks.GotAceHighCardPreFlop(context, firstCard, secondCard)
                         || CustomHandStreightChecks.GotKingighCardPreFlop(context, firstCard, secondCard))
                     {
-                        KickerAgressionStarted = true;
+                        kickerAgressionStarted = true;
                         return CustomPlayerActions.AgressivePlayerActionPreflop(context, preFlopCards, 11, 21);
                     }
 
                     return CustomPlayerActions.CheckOrFoldCustomAction(context);
                 }
-
             }
             else if (context.RoundType == GameRoundType.Flop)
             {
@@ -201,7 +198,6 @@
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.AddRange(communityCards);
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
 
@@ -220,7 +216,7 @@
                         return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
                 }
-                else if (KickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
+                else if (kickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
                 {
                     return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
                 }
@@ -234,7 +230,6 @@
 
                     return CustomPlayerActions.CheckOrFoldCustomAction(context);
                 }
-
             }
             else if (context.RoundType == GameRoundType.Turn)
             {
@@ -244,7 +239,6 @@
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.Clear();
                 currentCards.Add(firstCard);
                 currentCards.Add(secondCard);
@@ -267,7 +261,7 @@
                         return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
                 }
-                else if (KickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
+                else if (kickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
                 {
                     return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
                 }
@@ -282,15 +276,15 @@
                     return CustomPlayerActions.CheckOrFoldCustomAction(context);
                 }
             }
-            else // GameRoundType.River (final card)
+            else
             {
+                // GameRoundType.River (final card)
                 // TODO
                 // add strong logic for FLOP
                 // (do we have good card conmbination from our 2 cards and the floppef 5 cards)
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.Clear();
                 currentCards.Add(firstCard);
                 currentCards.Add(secondCard);
@@ -313,7 +307,7 @@
                         return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 5, 9);
                     }
                 }
-                else if (KickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
+                else if (kickerAgressionStarted && (context.CanCheck && context.MyMoneyInTheRound == 0))
                 {
                     return CustomPlayerActions.AgressivePlayerAction(context, preFlopCards, combination, 9, 11);
                 }
@@ -406,7 +400,6 @@
                 }
 
                 return CustomPlayerActions.CheckOrFoldCustomAction(context);
-
             }
             else if (context.RoundType == GameRoundType.Flop)
             {
@@ -416,7 +409,6 @@
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.AddRange(communityCards);
 
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
@@ -453,7 +445,6 @@
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.Clear();
                 currentCards.Add(firstCard);
                 currentCards.Add(secondCard);
@@ -487,15 +478,15 @@
                     return CustomPlayerActions.CheckOrFoldCustomAction(context);
                 }
             }
-            else // GameRoundType.River (final card)
+            else
             {
+                // GameRoundType.River (final card)
                 // TODO
                 // add strong logic for FLOP
                 // (do we have good card conmbination from our 2 cards and the floppef 5 cards)
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.Clear();
                 currentCards.Add(firstCard);
                 currentCards.Add(secondCard);
@@ -607,7 +598,6 @@
                 }
 
                 return CustomPlayerActions.CheckOrFoldCustomAction(context);
-
             }
             else if (context.RoundType == GameRoundType.Flop)
             {
@@ -617,7 +607,6 @@
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.AddRange(communityCards);
 
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
@@ -646,8 +635,7 @@
                     return CustomPlayerActions.CheckOrFoldCustomAction(context);
                 }
 
-                return PlayerAction.CheckOrCall();
-
+                // return PlayerAction.CheckOrCall();
             }
             else if (context.RoundType == GameRoundType.Turn)
             {
@@ -657,7 +645,6 @@
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.Clear();
                 currentCards.Add(firstCard);
                 currentCards.Add(secondCard);
@@ -689,15 +676,15 @@
                     return CustomPlayerActions.CheckOrFoldCustomAction(context);
                 }
             }
-            else // GameRoundType.River (final card)
+            else
             {
+                // GameRoundType.River (final card)
                 // TODO
                 // add strong logic for FLOP
                 // (do we have good card conmbination from our 2 cards and the floppef 5 cards)
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.Clear();
                 currentCards.Add(firstCard);
                 currentCards.Add(secondCard);
@@ -730,6 +717,5 @@
                 }
             }
         }
-
     }
 }

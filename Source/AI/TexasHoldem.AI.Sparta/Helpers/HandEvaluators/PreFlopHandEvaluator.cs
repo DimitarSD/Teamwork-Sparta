@@ -1,9 +1,7 @@
 ﻿namespace TexasHoldem.AI.Sparta.Helpers.HandEvaluators
 {
     using Contracts;
-    using System;
     using TexasHoldem.Logic.Cards;
-    using TexasHoldem.Logic.Players;
 
     internal class PreFlopHandEvaluator : IPreFlopHandEvaluator
     {

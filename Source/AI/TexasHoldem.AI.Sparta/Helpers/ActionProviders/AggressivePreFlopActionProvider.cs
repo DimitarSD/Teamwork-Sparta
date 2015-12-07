@@ -1,18 +1,32 @@
 ﻿namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 {
     using System;
-    using TexasHoldem.AI.Sparta.Helpers.HandEvaluators;
-    using TexasHoldem.Logic.Cards;
-    using TexasHoldem.Logic.Players;
+    using HandEvaluators;
+    using Logic.Cards;
+    using Logic.Players;
 
+    /// <summary>
+    /// Aggressive preflop action provider
+    /// </summary>
     internal class AggressivePreFlopActionProvider : ActionProvider
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggressivePreFlopActionProvider"/> class.
+        /// </summary>
+        /// <param name="context">Main game logic context</param>
+        /// <param name="first">First player card</param>
+        /// <param name="second">Second player card<</param>
+        /// <param name="isFirst">Boolean check for SmalBlind/BigBlind position</param>
         internal AggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second, bool isFirst)
             : base(context, first, second, isFirst)
         {
             this.handEvaluator = new PreFlopHandEvaluator();
         }
 
+        /// <summary>
+        /// Main action method to return logic-based game action
+        /// </summary>
+        /// <returns>Returns decisions based by the aggression level</returns>
         internal override PlayerAction GetAction()
         {
             var preflopCardsCoefficient = this.handEvaluator.PreFlopCoefficient(this.firstCard, this.secondCard);
@@ -100,7 +114,7 @@
                 }
             }
 
-            return PlayerAction.Raise(77);
+            return PlayerAction.CheckOrCall();
         }
     }
 }

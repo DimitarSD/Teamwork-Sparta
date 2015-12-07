@@ -22,7 +22,7 @@
                     {
                         return PlayerAction.CheckOrCall();
                     }
-                    else 
+                    else
                     {
                         return PlayerAction.Fold();
                     }

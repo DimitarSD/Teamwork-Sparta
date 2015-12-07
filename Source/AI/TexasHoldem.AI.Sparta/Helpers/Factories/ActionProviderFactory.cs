@@ -2,15 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Contracts;
-    using Logic.Players;
     using ActionProviders;
+    using ActionProviders.FlopProviders;
+    using Contracts;
     using Logic;
     using Logic.Cards;
-    using ActionProviders.FlopProviders;
+    using Logic.Players;
 
     internal class ActionProviderFactory : IActionProviderFactory
     {
@@ -53,7 +50,7 @@
                     else
                     {
                         // ontext.MoneyLeft / context.SmallBlind > 50
-                        return new AggressivePreFlopActionProvider(this.context, first, second, this.isFirst);
+                        return new PassiveAggressivePreFlopActionProvider(this.context, first, second, this.isFirst);
                     }
                 }
 

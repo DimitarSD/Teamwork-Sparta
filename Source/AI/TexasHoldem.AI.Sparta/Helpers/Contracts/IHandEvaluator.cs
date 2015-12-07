@@ -1,7 +1,10 @@
 ﻿namespace TexasHoldem.AI.Sparta.Helpers.Contracts
 {
-    using TexasHoldem.Logic.Cards;
+    using Logic.Cards;
 
+    /// <summary>
+    /// Interface providing method for resolving preflop pocket coefficient streinght
+    /// </summary>
     public interface IHandEvaluator
     {
         double PreFlopCoefficient(Card firstCard, Card secondCard);

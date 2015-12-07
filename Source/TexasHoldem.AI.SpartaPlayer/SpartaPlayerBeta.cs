@@ -31,7 +31,7 @@
                 var firstCard = this.FirstCard;
                 var secondCard = this.SecondCard;
                 var communityCards = this.CommunityCards;
-                return CustomStackActions.NormalStackMethod(context, preFlopCards, firstCard , secondCard, communityCards);
+                return CustomStackActions.NormalStackMethod(context, preFlopCards, firstCard, secondCard, communityCards);
             }
             else
             {

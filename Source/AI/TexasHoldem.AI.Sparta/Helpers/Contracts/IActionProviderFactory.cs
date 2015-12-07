@@ -1,10 +1,14 @@
 ﻿namespace TexasHoldem.AI.Sparta.Helpers.Contracts
 {
+    using System.Collections.Generic;
+
+    using ActionProviders;
     using Logic.Cards;
     using Logic.Players;
-    using System.Collections.Generic;
-    using TexasHoldem.AI.Sparta.Helpers.ActionProviders;
 
+    /// <summary>
+    /// ActionProviderFactory interface to provide method for returning logic based method
+    /// </summary>
     public interface IActionProviderFactory
     {
         ActionProvider GetActionProvider(GetTurnContext context, Card first, Card second, IReadOnlyCollection<Card> community);

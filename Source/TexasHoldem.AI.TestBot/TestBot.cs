@@ -2,11 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using Logic;
     using Helpers;
+    using Logic;
     using Logic.Cards;
-    using Spartalayer.Helpers;
     using Logic.Players;
+    using Spartalayer.Helpers;
 
     public class TestBot : BasePlayer
     {
@@ -57,7 +57,6 @@
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.AddRange(this.CommunityCards);
 
                 var combination = Logic.Helpers.Helpers.GetHandRank(currentCards);
@@ -75,7 +74,6 @@
                 {
                     return CheckOrFoldCustomAction(context);
                 }
-
             }
             else if (context.RoundType == GameRoundType.Turn)
             {
@@ -85,7 +83,6 @@
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.Clear();
                 currentCards.Add(this.FirstCard);
                 currentCards.Add(this.SecondCard);
@@ -106,17 +103,16 @@
                 {
                     return CheckOrFoldCustomAction(context);
                 }
-
             }
-            else // GameRoundType.River (final card)
+            else
             {
+                // GameRoundType.River (final card)
                 // TODO
                 // add strong logic for FLOP
                 // (do we have good card conmbination from our 2 cards and the floppef 5 cards)
                 // иif we have already played aggresivly (all-in) we should check/call
                 // if NOT god combination - we can check or fold
                 // if strong combination we can put more agressiong and raise/all-in
-
                 currentCards.Clear();
                 currentCards.Add(this.FirstCard);
                 currentCards.Add(this.SecondCard);
@@ -163,7 +159,6 @@
                                 combination == HandRankType.TwoPairs ||
                                 combination == HandRankType.Flush ||
                                 combination == HandRankType.Pair;
-
         }
 
         private static bool GotVeryStrongHand(HandRankType combination)
@@ -189,6 +184,7 @@
                 {
                     return PlayerAction.CheckOrCall();
                 }
+
                 return PlayerAction.Fold();
             }
             else

@@ -49,7 +49,7 @@
     <Compile Include="Helpers\ActionProviders\ActionProvider.cs" />
     <Compile Include="Helpers\ActionProviders\PreFlopActionProvider.cs" />
     <Compile Include="Helpers\Contracts\IActionProviderFactory.cs" />
-    <Compile Include="Helpers\HandEvaluators\CheckBoardDryness.cs" />
+    <Compile Include="Helpers\FlopHelpers\WetDryFlopHelper.cs" />
     <Compile Include="Helpers\HandEvaluators\CheckPair.cs" />
     <Compile Include="Helpers\HandEvaluators\PostFlopHandEvaluator.cs" />
     <Compile Include="Helpers\HandEvaluators\PreFlopHandEvaluator.cs" />

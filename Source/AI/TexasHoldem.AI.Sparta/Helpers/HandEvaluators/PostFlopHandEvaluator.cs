@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TexasHoldem.Logic;
-using TexasHoldem.Logic.Cards;
-using TexasHoldem.Logic.Players;
-
-namespace TexasHoldem.AI.Sparta.Helpers.HandEvaluators
+﻿namespace TexasHoldem.AI.Sparta.Helpers.HandEvaluators
 {
+    using Logic;
+    using Logic.Cards;
+
     internal static class PostFlopHandEvaluator
     {
         public static bool GotAceHighCardPreFlop(Card firstCard, Card secondCard)
@@ -55,6 +49,5 @@ namespace TexasHoldem.AI.Sparta.Helpers.HandEvaluators
                     combination == HandRankType.FourOfAKind ||
                     combination == HandRankType.StraightFlush;
         }
-
     }
 }

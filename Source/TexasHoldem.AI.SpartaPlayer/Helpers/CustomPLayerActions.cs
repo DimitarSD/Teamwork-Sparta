@@ -32,7 +32,7 @@
                         }
                         else
                         {
-                            return PlayerAction.Raise(context.SmallBlind * raiseAmount/2);
+                            return PlayerAction.Raise(context.SmallBlind * raiseAmount / 2);
                         }
                     }
 
@@ -60,7 +60,7 @@
                         }
                         else
                         {
-                            return PlayerAction.Raise(context.SmallBlind * raiseAmount/2);
+                            return PlayerAction.Raise(context.SmallBlind * raiseAmount / 2);
                         }
                     }
 
@@ -257,7 +257,6 @@
                     {
                         return CheckOrFoldCustomAction(context);
                     }
-
                 }
             }
             else if (preFlopCards == CardValueType.NotRecommended || preFlopCards == CardValueType.Risky)
@@ -471,6 +470,7 @@
                 {
                     return PlayerAction.CheckOrCall();
                 }
+
                 return PlayerAction.Fold();
             }
             else

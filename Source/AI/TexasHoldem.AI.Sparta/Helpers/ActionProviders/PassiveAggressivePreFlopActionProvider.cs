@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TexasHoldem.AI.Sparta.Helpers.HandEvaluators;
-using TexasHoldem.Logic.Cards;
-using TexasHoldem.Logic.Players;
-
-namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
+﻿namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 {
+    using System;
+    using HandEvaluators;
+    using Logic.Cards;
+    using Logic.Players;
+
     internal class PassiveAggressivePreFlopActionProvider : ActionProvider
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PassiveAggressivePreFlopActionProvider"/> class.
+        /// </summary>
+        /// <param name="context">Main game logic context</param>
+        /// <param name="first">First player card</param>
+        /// <param name="second">Second player card<</param>
+        /// <param name="isFirst">Boolean check for SmalBlind/BigBlind position</param>
         internal PassiveAggressivePreFlopActionProvider(GetTurnContext context, Card first, Card second, bool isFirst)
             : base(context, first, second, isFirst)
         {

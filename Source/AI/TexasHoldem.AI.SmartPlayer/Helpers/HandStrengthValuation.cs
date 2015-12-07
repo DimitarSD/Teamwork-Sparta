@@ -4,7 +4,7 @@
 
     public static class HandStrengthValuation
     {
-		private const int MaxCardTypeValue = 14;
+        private const int MaxCardTypeValue = 14;
 
         private static readonly int[,] StartingHandRecommendations =
             {

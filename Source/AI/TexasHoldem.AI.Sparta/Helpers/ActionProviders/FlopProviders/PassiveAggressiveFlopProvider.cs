@@ -3,17 +3,24 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+
     using HandEvaluators;
     using Logic.Cards;
-    using TexasHoldem.Logic.Players;
+    using Logic.Players;
 
     internal class PassiveAggressiveFlopProvider : ActionProvider
     {
         private IReadOnlyCollection<Card> communityCards;
         private List<Card> allCards;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PassiveAggressiveFlopProvider"/> class.
+        /// </summary>
+        /// <param name="context">Main game logic context</param>
+        /// <param name="first">First player card</param>
+        /// <param name="second">Second player card<</param>
+        /// <param name="isFirst">Boolean check for SmalBlind/BigBlind position</param>
+        /// <param name="communityCards">The community board cards (flop, turn, river)</param>
         internal PassiveAggressiveFlopProvider(GetTurnContext context, Card first, Card second, IReadOnlyCollection<Card> communityCards, bool isFirst)
             : base(context, first, second, isFirst)
         {
@@ -52,7 +59,7 @@
                                 {
                                     return PlayerAction.Raise(this.Context.MoneyLeft);
                                 }
-                                // call
+
                                 return PlayerAction.CheckOrCall();
                             }
                         }
@@ -62,8 +69,8 @@
 
                             if (pair == -1)
                             {
-                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
-                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(this.firstCard, this.secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(this.firstCard, this.secondCard))
                                 {
                                     if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 7)
                                     {
@@ -86,9 +93,8 @@
                             }
                             else if (pair < 8)
                             {
-                                //TODO: CHECH WET OR DRY!!!!!!
-                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
-                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(this.firstCard, this.secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(this.firstCard, this.secondCard))
                                 {
                                     if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 10)
                                     {
@@ -123,10 +129,10 @@
                             }
                             else
                             {
-                                //Pair >= 9
-                                //TODO: CHECH WET OR DRY!!!!!!
-                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
-                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                // Pair >= 9
+                                // TODO: CHECH WET OR DRY!!!!!!
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(this.firstCard, this.secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(this.firstCard, this.secondCard))
                                 {
                                     if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 15)
                                     {
@@ -159,10 +165,10 @@
                                     }
                                 }
                             }
-
                         }
-                        else // two-pairs
+                        else
                         {
+                            // two-pairs
                             if (this.Context.MyMoneyInTheRound == this.Context.SmallBlind * 2)
                             {
                                 // no aggressors
@@ -228,8 +234,9 @@
                         return this.CheckOrFold();
                     }
                 }
-                else // Second (BB)
+                else
                 {
+                    // Second (BB)
                     if (PostFlopHandEvaluator.GotAnyCombination(combination))
                     {
                         if (PostFlopHandEvaluator.GotStrongHand(combination))
@@ -251,7 +258,7 @@
                                 {
                                     return PlayerAction.Raise(this.Context.MoneyLeft);
                                 }
-                                // call
+
                                 return PlayerAction.CheckOrCall();
                             }
                         }
@@ -261,8 +268,8 @@
 
                             if (pair == -1)
                             {
-                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
-                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(this.firstCard, this.secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(this.firstCard, this.secondCard))
                                 {
                                     if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 7)
                                     {
@@ -285,9 +292,9 @@
                             }
                             else if (pair < 8)
                             {
-                                //TODO: CHECH WET OR DRY!!!!!!
-                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
-                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                // TODO: CHECH WET OR DRY!!!!!!
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(this.firstCard, this.secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(this.firstCard, this.secondCard))
                                 {
                                     if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 10)
                                     {
@@ -322,10 +329,10 @@
                             }
                             else
                             {
-                                //Pair >= 9
-                                //TODO: CHECH WET OR DRY!!!!!!
-                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
-                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                // Pair >= 9
+                                // TODO: CHECH WET OR DRY!!!!!!
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(this.firstCard, this.secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(this.firstCard, this.secondCard))
                                 {
                                     if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 15)
                                     {
@@ -358,10 +365,10 @@
                                     }
                                 }
                             }
-
                         }
-                        else // two-pairs
+                        else
                         {
+                            // two-pairs
                             if (this.Context.MyMoneyInTheRound == this.Context.SmallBlind * 2)
                             {
                                 // no aggressors

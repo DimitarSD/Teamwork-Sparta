@@ -1,12 +1,14 @@
-﻿namespace TexasHoldem.AI.Sparta
+﻿/// <summary>
+/// Sparta player entry point
+/// Receives action provided by the object factory
+/// </summary>
+namespace TexasHoldem.AI.Sparta
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using TexasHoldem.Logic.Players;
-    using TexasHoldem.AI.Sparta.Helpers.Factories;
-    using TexasHoldem.AI.Sparta.Helpers.Contracts;
+
+    using Helpers.Contracts;
+    using Helpers.Factories;
+    using Logic.Players;
 
     public class SpartaPlayer : BasePlayer
     {
