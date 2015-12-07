@@ -32,7 +32,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                         {
                             if (preflopCardsCoefficient >= 63.00)
                             {
-                                return PlayerAction.Raise(this.Context.CurrentMaxBet + this.Context.SmallBlind * 2);
+                                return PlayerAction.Raise(Math.Max(this.push, this.raise));
                             }
                             else if (preflopCardsCoefficient >= 58.00 && preflopCardsCoefficient < 63.00)
                             {
@@ -40,15 +40,15 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                             }
                             else
                             {
-                                return PlayerAction.Fold();
+                                return this.CheckOrFold();
                             }
                         }
 
-                        return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                        return PlayerAction.Raise(this.raise);
                     }
                     else
                     {
-                        return PlayerAction.Fold();
+                        return this.CheckOrFold();
                     }
                 }
                 else
@@ -58,7 +58,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                     {
                         if (preflopCardsCoefficient >= 55.00)
                         {
-                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                            return PlayerAction.Raise(Math.Max(this.push, this.raise));
                         }
                         else
                         {
@@ -69,7 +69,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                     {
                         if (preflopCardsCoefficient >= 61.00)
                         {
-                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                            return PlayerAction.Raise(Math.Max(this.push, this.raise));
                         }
                         else if (preflopCardsCoefficient >= 58.00 && preflopCardsCoefficient < 61.00)
                         {
@@ -78,7 +78,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                         else
                         {
                             // preflopCardsCoefficient < 58.00
-                            return PlayerAction.Fold();
+                            return this.CheckOrFold();
                         }
                     }
                     else
@@ -86,7 +86,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                         // he has raised with 3BB (or 6 SB)
                         if (preflopCardsCoefficient >= 65.00)
                         {
-                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                            return PlayerAction.Raise(Math.Max(this.push, this.raise));
                         }
                         else if (preflopCardsCoefficient >= 62.00 && preflopCardsCoefficient < 65.00)
                         {
@@ -94,11 +94,12 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                         }
                         else
                         {
-                            return PlayerAction.Fold();
+                            return this.CheckOrFold();
                         }
                     }
                 }
             }
+
             return PlayerAction.CheckOrCall();
         }
     }

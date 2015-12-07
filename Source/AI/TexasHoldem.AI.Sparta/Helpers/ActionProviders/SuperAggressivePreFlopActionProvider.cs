@@ -25,7 +25,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
             {
                 if (this.Context.MoneyLeft > 0)
                 {
-                    if (this.Context.MoneyLeft > this.Context.SmallBlind * 6)
+                    if (this.Context.MoneyLeft > this.raise)
                     {
                         if (preflopCardsCoefficient >= 52.00)
                         {
@@ -33,7 +33,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                         }
                         else if (preflopCardsCoefficient < 52.00)
                         {
-                            return PlayerAction.Fold();
+                            return this.CheckOrFold();
                         }
                     }
                     else
@@ -49,7 +49,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
             {
                 if (this.Context.MoneyLeft > 0)
                 {
-                    if (this.Context.MoneyLeft > this.Context.SmallBlind * 6)
+                    if (this.Context.MoneyLeft > this.raise)
                     {
                         if (preflopCardsCoefficient >= 58.00
                             || (this.firstCard.Type == CardType.Ace || this.secondCard.Type == CardType.Ace)
@@ -60,7 +60,7 @@ namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
                         }
                         else
                         {
-                            return PlayerAction.Fold();
+                            return this.CheckOrFold();
                         }
                     }
                     else

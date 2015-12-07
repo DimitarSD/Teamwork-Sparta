@@ -29,7 +29,6 @@
         {
             var actionProvider = this.actionProviderFactory.GetActionProvider(context, this.FirstCard, this.SecondCard, this.CommunityCards);
 
-            
             return actionProvider.GetAction();
         }
     }

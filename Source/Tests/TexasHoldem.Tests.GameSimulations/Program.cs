@@ -26,7 +26,6 @@
             //SimulateGames(new SpartaVSpartaSimulation());
         }
 
-
         private static void SimulateGames(IGameSimulator gameSimulator)
         {
             Console.WriteLine($"Running {gameSimulator.GetType().Name}...");

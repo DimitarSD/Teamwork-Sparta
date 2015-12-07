@@ -1,5 +1,6 @@
 ﻿namespace TexasHoldem.AI.Sparta.Helpers.ActionProviders
 {
+    using System;
     using TexasHoldem.AI.Sparta.Helpers.HandEvaluators;
     using TexasHoldem.Logic.Cards;
     using TexasHoldem.Logic.Players;
@@ -39,7 +40,7 @@
                             }
                         }
 
-                        return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
                     }
                     else
                     {
@@ -55,19 +56,19 @@
                         // opponent calls one SB only
                         if (preflopCardsCoefficient >= 55.00)
                         {
-                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                            return PlayerAction.Raise(Math.Max(this.push, this.raise));
                         }
                         else
                         {
                             return PlayerAction.CheckOrCall();
                         }
                     }
-                    else if (!this.Context.CanCheck && this.Context.MoneyToCall < this.Context.SmallBlind * 6)
+                    else if (!this.Context.CanCheck && this.Context.MoneyToCall < this.raise)
                     {
                         // opponent raises < 3-Bet
                         if (preflopCardsCoefficient >= 56.00)
                         {
-                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                            return PlayerAction.Raise(Math.Max(this.push, this.raise));
                         }
                         else if (preflopCardsCoefficient >= 53.00 && preflopCardsCoefficient < 56.00)
                         {
@@ -78,12 +79,16 @@
                             return PlayerAction.Fold();
                         }
                     }
-                    else if (!this.Context.CanCheck && this.Context.MoneyToCall >= this.Context.SmallBlind * 6)
+                    else if (!this.Context.CanCheck && this.Context.MoneyToCall >= this.raise)
                     {
                         // opponent raises >= 3-Bet
                         if (preflopCardsCoefficient >= 60.00)
                         {
-                            return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                            return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                        }
+                        else if (preflopCardsCoefficient >= 56.00 && preflopCardsCoefficient < 60.00)
+                        {
+                            return PlayerAction.CheckOrCall();
                         }
                         else
                         {

@@ -38,13 +38,13 @@
                             if (this.Context.MyMoneyInTheRound == this.Context.SmallBlind * 2)
                             {
                                 // no aggressors
-                                return PlayerAction.Raise(Math.Max(this.Context.CurrentPot / 2, this.Context.SmallBlind * 6));
+                                return PlayerAction.Raise(Math.Max(this.push, this.raise));
                             }
                             else if (this.Context.MyMoneyInTheRound >= this.Context.SmallBlind * 2
-                                && this.Context.MyMoneyInTheRound >= this.Context.SmallBlind * 25)
+                                && this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 25)
                             {
                                 // re-raise and we are re-re-raising
-                                return PlayerAction.Raise(Math.Max(this.Context.CurrentPot / 2, this.Context.SmallBlind * 6));
+                                return PlayerAction.Raise(Math.Max(this.push, this.raise));
                             }
                             else
                             {
@@ -56,33 +56,128 @@
                                 return PlayerAction.CheckOrCall();
                             }
                         }
-                        else // pair or two-pairs
+                        else if (combination == Logic.HandRankType.Pair)
+                        {
+                            var pair = CheckPair.Get(this.allCards);
+
+                            if (pair == -1)
+                            {
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 7)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 35)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                                else
+                                {
+                                    return this.CheckOrFold();
+                                }
+                            }
+                            else if (pair < 8)
+                            {
+                                //TODO: CHECH WET OR DRY!!!!!!
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 10)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                                else
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 7)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //Pair >= 9
+                                //TODO: CHECH WET OR DRY!!!!!!
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 25)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                                else
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 10)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                            }
+
+                        }
+                        else // two-pairs
                         {
                             if (this.Context.MyMoneyInTheRound == this.Context.SmallBlind * 2)
                             {
                                 // no aggressors
-                                return PlayerAction.Raise(Math.Max(this.Context.CurrentPot / 2, this.Context.SmallBlind * 6));
+                                return PlayerAction.Raise(Math.Max(this.push, this.raise));
                             }
-                            else 
+                            else
                             {
                                 // call
                                 if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 15)
                                 {
-                                    return PlayerAction.Raise(Math.Max(this.Context.CurrentPot / 2, this.Context.SmallBlind * 6));
-                                }
-
-                                if (this.Context.MoneyToCall <= this.Context.SmallBlind * 21)
-                                {
-                                    return PlayerAction.CheckOrCall();
+                                    return PlayerAction.Raise(Math.Max(this.push, this.raise));
                                 }
                                 else
                                 {
-                                    if (combination == Logic.HandRankType.TwoPairs)
-                                    {
-                                        return PlayerAction.CheckOrCall();
-                                    }
-
-                                    return PlayerAction.Fold();
+                                    return PlayerAction.CheckOrCall();
                                 }
                             }
                         }
@@ -93,7 +188,7 @@
                         if (this.firstCard.Suit == this.secondCard.Suit)
                         {
                             var count = 2;
-                            foreach (var item in this.allCards)
+                            foreach (var item in this.communityCards)
                             {
                                 if (item.Suit == this.firstCard.Suit)
                                 {
@@ -105,14 +200,14 @@
                             {
                                 if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 11)
                                 {
-                                    return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                                    return PlayerAction.Raise(this.raise);
                                 }
                                 else if (this.Context.MoneyToCall < this.Context.SmallBlind * 21)
                                 {
                                     return PlayerAction.CheckOrCall();
                                 }
 
-                                return PlayerAction.Fold();
+                                return this.CheckOrFold();
                             }
                         }
                         else if (PostFlopHandEvaluator.GotAceHighCardPreFlop(this.firstCard, this.secondCard) ||
@@ -120,21 +215,20 @@
                         {
                             if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 11)
                             {
-                                return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                                return PlayerAction.Raise(this.raise);
                             }
                             else if (this.Context.MoneyToCall < this.Context.SmallBlind * 21)
                             {
                                 return PlayerAction.CheckOrCall();
                             }
 
-                            return PlayerAction.Fold();
+                            return this.CheckOrFold();
                         }
 
-
-                        return PlayerAction.Fold();
+                        return this.CheckOrFold();
                     }
                 }
-                else
+                else // Second (BB)
                 {
                     if (PostFlopHandEvaluator.GotAnyCombination(combination))
                     {
@@ -143,13 +237,13 @@
                             if (this.Context.MyMoneyInTheRound == this.Context.SmallBlind * 2)
                             {
                                 // no aggressors
-                                return PlayerAction.Raise(Math.Max(this.Context.CurrentPot / 2, this.Context.SmallBlind * 6));
+                                return PlayerAction.Raise(Math.Max(this.push, this.raise));
                             }
                             else if (this.Context.MyMoneyInTheRound >= this.Context.SmallBlind * 2
-                                && this.Context.MyMoneyInTheRound >= this.Context.SmallBlind * 25)
+                                && this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 25)
                             {
                                 // re-raise and we are re-re-raising
-                                return PlayerAction.Raise(Math.Max(this.Context.CurrentPot / 2, this.Context.SmallBlind * 6));
+                                return PlayerAction.Raise(Math.Max(this.push, this.raise));
                             }
                             else
                             {
@@ -161,30 +255,129 @@
                                 return PlayerAction.CheckOrCall();
                             }
                         }
-                        else // pair or two-pairs
+                        else if (combination == Logic.HandRankType.Pair)
+                        {
+                            var pair = CheckPair.Get(this.allCards);
+
+                            if (pair == -1)
+                            {
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 7)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                                else
+                                {
+                                    return this.CheckOrFold();
+                                }
+                            }
+                            else if (pair < 8)
+                            {
+                                //TODO: CHECH WET OR DRY!!!!!!
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 10)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                                else
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 7)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //Pair >= 9
+                                //TODO: CHECH WET OR DRY!!!!!!
+                                if (PostFlopHandEvaluator.GotAceHighCardPreFlop(firstCard, secondCard) ||
+                                    PostFlopHandEvaluator.GotKingighCardPreFlop(firstCard, secondCard))
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 25)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                                else
+                                {
+                                    if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 10)
+                                    {
+                                        return PlayerAction.Raise(Math.Max(this.push, this.raise));
+                                    }
+
+                                    if (this.Context.MoneyToCall <= this.Context.SmallBlind * 15)
+                                    {
+                                        return PlayerAction.CheckOrCall();
+                                    }
+                                    else
+                                    {
+                                        return this.CheckOrFold();
+                                    }
+                                }
+                            }
+
+                        }
+                        else // two-pairs
                         {
                             if (this.Context.MyMoneyInTheRound == this.Context.SmallBlind * 2)
                             {
                                 // no aggressors
-                                return PlayerAction.Raise(Math.Max(this.Context.CurrentPot / 2, this.Context.SmallBlind * 6));
+                                return PlayerAction.Raise(Math.Max(this.push, this.raise));
                             }
                             else
                             {
                                 // call
                                 if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 15)
                                 {
-                                    return PlayerAction.Raise(Math.Max(this.Context.CurrentPot / 2, this.Context.SmallBlind * 6));
-                                }
-
-                                if (this.Context.MoneyToCall <= this.Context.SmallBlind * 21)
-                                {
-                                    return PlayerAction.CheckOrCall();
+                                    return PlayerAction.Raise(Math.Max(this.push, this.raise));
                                 }
                                 else
                                 {
-                                    return PlayerAction.Fold();
+                                    return PlayerAction.CheckOrCall();
                                 }
-
                             }
                         }
                     }
@@ -194,7 +387,7 @@
                         if (this.firstCard.Suit == this.secondCard.Suit)
                         {
                             var count = 2;
-                            foreach (var item in this.allCards)
+                            foreach (var item in this.communityCards)
                             {
                                 if (item.Suit == this.firstCard.Suit)
                                 {
@@ -206,14 +399,14 @@
                             {
                                 if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 11)
                                 {
-                                    return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                                    return PlayerAction.Raise(this.raise);
                                 }
                                 else if (this.Context.MoneyToCall < this.Context.SmallBlind * 21)
                                 {
                                     return PlayerAction.CheckOrCall();
                                 }
 
-                                return PlayerAction.Fold();
+                                return this.CheckOrFold();
                             }
                         }
                         else if (PostFlopHandEvaluator.GotAceHighCardPreFlop(this.firstCard, this.secondCard) ||
@@ -221,18 +414,22 @@
                         {
                             if (this.Context.MyMoneyInTheRound <= this.Context.SmallBlind * 11)
                             {
-                                return PlayerAction.Raise(this.Context.SmallBlind * 6);
+                                return PlayerAction.Raise(this.raise);
                             }
                             else if (this.Context.MoneyToCall < this.Context.SmallBlind * 21)
                             {
                                 return PlayerAction.CheckOrCall();
                             }
 
-                            return PlayerAction.Fold();
+                            return this.CheckOrFold();
                         }
 
+                        if (this.Context.CanCheck)
+                        {
+                            return PlayerAction.Raise(this.raise);
+                        }
 
-                        return PlayerAction.Fold();
+                        return this.CheckOrFold();
                     }
                 }
             }
